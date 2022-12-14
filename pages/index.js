@@ -2,7 +2,7 @@ import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import Landing from "../components/Landing";
-import Chat from "../components/Chat";
+import Chat from "../components/ContactsPanel";
 import Loading from "../components/Loading";
 
 export default function Home() {
