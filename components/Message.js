@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
+
+import Avatar from "./Avatar";
+
+import { db } from "../firebase";
+import { doc } from "firebase/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 
 function Message({ message, style }) {
   const { userSentMessage, styleOfMessage } = style;
 
+  const [customUser] = useDocumentData(doc(db, "users", message.sender));
+
   // Setting the roundness of the message
-  let messageStyle =
-    "w-full bg-blue-500 w-fit px-4 py-2 text-white rounded-3xl duration-200 ease-in-out";
+  let messageStyle = `w-full ${
+    userSentMessage ? "bg-rose-500" : "bg-gray-100 text-black"
+  } w-fit px-4 py-2 text-white rounded-3xl duration-200 ease-in-out`;
   switch (styleOfMessage) {
     case "first":
       messageStyle += userSentMessage ? " rounded-br-none" : " rounded-bl-none";
@@ -50,7 +59,14 @@ function Message({ message, style }) {
     >
       <p className={messageStyle}>{message.content}</p>
       {styleOfMessage === "last" || styleOfMessage === "independent" ? (
-        <p className="text-xs opacity-75 mt-1 mx-4">{renderTime()}</p>
+        <div
+          className={`flex items-center ${
+            userSentMessage ? "flex-row" : "flex-row-reverse"
+          }`}
+        >
+          <p className="text-xs opacity-75 mt-1">{renderTime()}</p>
+          <Avatar src={customUser?.photoURL} className="h-4 w-4 mt-1 mx-1" />
+        </div>
       ) : null}
     </div>
   );

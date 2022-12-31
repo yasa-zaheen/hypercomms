@@ -126,7 +126,7 @@ function CentreColumnChat({ user }) {
         </div>
       </div>
       {/* Chats */}
-      <div className="flex-1 flex flex-col-reverse overflow-scroll rounded-3xl scrollbar-hide">
+      <div className="flex-1 flex flex-col-reverse  overflow-y-scroll rounded-xl scrollbar-hide">
         <div ref={scroller} className="h-4 bg-transparent"></div>
         {messages?.map((message) => (
           <Message message={message} style={getMessageStyle(message)} />
