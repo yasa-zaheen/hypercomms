@@ -50,7 +50,7 @@ function Message({ message, style }) {
     >
       <p className={messageStyle}>{message.content}</p>
       {styleOfMessage === "last" || styleOfMessage === "independent" ? (
-        <p className="text-xs opacity-75 mt-1">{renderTime()}</p>
+        <p className="text-xs opacity-75 mt-1 mx-4">{renderTime()}</p>
       ) : null}
     </div>
   );
