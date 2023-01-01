@@ -1,19 +1,24 @@
 import React from "react";
 
 import Avatar from "./Avatar";
+import IconButton from "./IconButton";
 
 import { db } from "../firebase";
 import { doc } from "firebase/firestore";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 
-function Message({ message, style }) {
+import { ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
+
+function Message({ message, style, setRepliedMessage }) {
   const { userSentMessage, styleOfMessage } = style;
 
   const [customUser] = useDocumentData(doc(db, "users", message.sender));
 
   // Setting the roundness of the message
-  let messageStyle = `w-full ${
-    userSentMessage ? "bg-rose-500" : "bg-gray-100 text-black"
+  let messageStyle = `w-full flex flex-col ${
+    userSentMessage
+      ? "bg-rose-500 items-end"
+      : "bg-gray-100 text-black items-start"
   } w-fit px-4 py-2 text-white rounded-3xl duration-200 ease-in-out`;
   switch (styleOfMessage) {
     case "first":
@@ -51,13 +56,45 @@ function Message({ message, style }) {
     return time;
   };
 
+  // Handling replied messages
+  const replytoMessage = (message) => {
+    setRepliedMessage(message);
+  };
+
   return (
     <div
-      className={`w-full flex flex-col mt-1  ${
+      className={`group w-full flex flex-col mt-1  ${
         userSentMessage ? "items-end" : "items-start"
       }`}
     >
-      <p className={messageStyle}>{message.content}</p>
+      {/* Message content, reply button and replied message */}
+      <div
+        className={`flex items-center ${
+          userSentMessage ? "flex-row-reverse" : "flex-row"
+        }`}
+      >
+        <p className={messageStyle}>
+          {message.replied ? (
+            <p className="text-xs font-semibold">
+              Replied to: {message.replied}
+            </p>
+          ) : null}
+          {message.content}
+        </p>
+        <IconButton
+          className={`h-8 w-8 mx-2 ${
+            userSentMessage
+              ? "bg-rose-500 text-white"
+              : "bg-gray-100 text-black"
+          } scale-0 group-hover:scale-100 `}
+          Icon={ArrowUturnLeftIcon}
+          onClick={() => {
+            replytoMessage(message.content);
+          }}
+        />
+      </div>
+
+      {/* Time and photo */}
       {styleOfMessage === "last" || styleOfMessage === "independent" ? (
         <div
           className={`flex items-center ${

@@ -20,7 +20,7 @@ import {
 } from "firebase/firestore";
 import { useCollectionData, useDocument } from "react-firebase-hooks/firestore";
 
-import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
+import { PaperAirplaneIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 function CentreColumnChat({ user }) {
   const router = useRouter();
@@ -103,17 +103,29 @@ function CentreColumnChat({ user }) {
         sent: serverTimestamp(),
         sender: user.email,
         room: room.id,
+        replied: repliedMessage || null,
       });
+
+      const userRef = doc(db, "users", user.email);
+
+      if (repliedMessage) {
+        await updateDoc(userRef, {
+          points: increment(7),
+        });
+      } else {
+        await updateDoc(userRef, {
+          points: increment(5),
+        });
+      }
 
       scroller.current.scrollIntoView({ behavior: "smooth" });
       setText("");
-
-      const userRef = doc(db, "users", user.email);
-      await updateDoc(userRef, {
-        points: increment(5),
-      });
+      setRepliedMessage("");
     }
   };
+
+  // Handling replied messages
+  const [repliedMessage, setRepliedMessage] = useState();
 
   return (
     <div className="w-1/2 flex flex-col space-y-4 h-full">
@@ -129,21 +141,52 @@ function CentreColumnChat({ user }) {
       <div className="flex-1 flex flex-col-reverse  overflow-y-scroll rounded-xl scrollbar-hide">
         <div ref={scroller} className="h-4 bg-transparent"></div>
         {messages?.map((message) => (
-          <Message message={message} style={getMessageStyle(message)} />
+          <Message
+            message={message}
+            style={getMessageStyle(message)}
+            repliedMessage={repliedMessage}
+            setRepliedMessage={setRepliedMessage}
+          />
         ))}
       </div>
       {/* Input */}
       <form
-        className="bg-green-50 rounded-xl p-4 flex items-center space-x-4"
+        className="bg-green-50 rounded-xl p-4 flex flex-col"
         onSubmit={sendMessage}
       >
-        <CustomInput
-          placeholder={"Don't be shy, Say hi!"}
-          value={text}
-          setValue={setText}
-          className="mt-0 rounded-xl bg-white p-3"
-        />
-        <IconButton Icon={PaperAirplaneIcon} className="bg-green-200" submit />
+        {/* Replied message container */}
+        <div
+          className={`flex items-center space-x-4 ${
+            repliedMessage ? "opacity-100 mb-4" : "h-0 opacity-0"
+          } duration-200 ease-in-out`}
+        >
+          <IconButton
+            Icon={XMarkIcon}
+            className="bg-green-200"
+            onClick={() => {
+              setRepliedMessage();
+            }}
+          />
+          <div>
+            <p className="text-sm font-semibold">Replying to</p>
+            <p className="text-xs opacity-75">{repliedMessage}</p>
+          </div>
+        </div>
+
+        {/* Input container */}
+        <div className="flex items-center space-x-4">
+          <CustomInput
+            placeholder={"Don't be shy, Say hi!"}
+            value={text}
+            setValue={setText}
+            className="mt-0 rounded-xl bg-white p-3"
+          />
+          <IconButton
+            Icon={PaperAirplaneIcon}
+            className="bg-green-200"
+            submit
+          />
+        </div>
       </form>
     </div>
   );
