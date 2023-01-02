@@ -18,7 +18,11 @@ import {
   increment,
   limit,
 } from "firebase/firestore";
-import { useCollectionData, useDocument } from "react-firebase-hooks/firestore";
+import {
+  useCollection,
+  useCollectionData,
+  useDocument,
+} from "react-firebase-hooks/firestore";
 
 import { PaperAirplaneIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
@@ -41,7 +45,7 @@ function CentreColumnChat({ user }) {
   }, [room]);
 
   // Fetching the messsages
-  const [messages] = useCollectionData(
+  const [messages] = useCollection(
     query(
       collection(db, `rooms/${router.query.roomId}/messages`),
       orderBy("sent", "desc"),
@@ -55,33 +59,47 @@ function CentreColumnChat({ user }) {
     let styleOfMessage;
 
     // Determining who sent the message
-    if (message.sender === user.email) {
+
+    if (message.data().sender === user.email) {
       userSentMessage = true;
-    } else if (message.sender !== user.email) {
+    }
+    if (message.data().sender !== user.email) {
       userSentMessage = false;
     }
 
     // Determing the style of message
-    const indexOfMessage = messages.indexOf(message);
+    let indexOfMessage = 0;
 
-    if (message.sender !== messages[indexOfMessage - 1]?.sender) {
+    for (let i = 0; i < messages.docs.length; i++) {
+      if (messages.docs[i].id == message.id) {
+        break;
+      } else indexOfMessage++;
+    }
+
+    if (
+      message.data().sender !== messages.docs[indexOfMessage - 1]?.data().sender
+    ) {
       styleOfMessage = "last";
     }
 
     if (
-      message.sender === messages[indexOfMessage - 1]?.sender &&
-      message.sender === messages[indexOfMessage + 1]?.sender
+      message.data().sender ===
+        messages.docs[indexOfMessage - 1]?.data().sender &&
+      message.data().sender === messages.docs[indexOfMessage + 1]?.data().sender
     ) {
       styleOfMessage = "middle";
     }
 
-    if (message.sender !== messages[indexOfMessage + 1]?.sender) {
+    if (
+      message.data().sender !== messages.docs[indexOfMessage + 1]?.data().sender
+    ) {
       styleOfMessage = "first";
     }
 
     if (
-      message.sender !== messages[indexOfMessage + 1]?.sender &&
-      message.sender !== messages[indexOfMessage - 1]?.sender
+      message.data().sender !==
+        messages.docs[indexOfMessage + 1]?.data().sender &&
+      message.data().sender !== messages.docs[indexOfMessage - 1]?.data().sender
     ) {
       styleOfMessage = "independent";
     }
@@ -140,7 +158,7 @@ function CentreColumnChat({ user }) {
       {/* Chats */}
       <div className="flex-1 flex flex-col-reverse  overflow-y-scroll rounded-xl scrollbar-hide">
         <div ref={scroller} className="h-4 bg-transparent"></div>
-        {messages?.map((message) => (
+        {messages?.docs.map((message) => (
           <Message
             message={message}
             style={getMessageStyle(message)}
