@@ -126,6 +126,7 @@ function CentreColumnChat({ user }) {
 
       const userRef = doc(db, "users", user.email);
 
+      // Points for replied message
       if (repliedMessage) {
         await updateDoc(userRef, {
           points: increment(7),

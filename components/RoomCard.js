@@ -2,10 +2,11 @@ import React from "react";
 import { useRouter } from "next/router";
 
 import Avatar from "./Avatar";
+import sentTimeAgo from "../functions/sentTimeAgo";
 
 import { db } from "../firebase";
-import { doc } from "firebase/firestore";
-import { useDocument } from "react-firebase-hooks/firestore";
+import { collection, doc, limit, orderBy, query } from "firebase/firestore";
+import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 
 function RoomCard({ room, user }) {
   const router = useRouter();
@@ -20,6 +21,17 @@ function RoomCard({ room, user }) {
     )
   );
 
+  // Last status
+  const [message] = useCollection(
+    query(
+      collection(db, `rooms/${room.id}/messages`),
+      orderBy("sent", "desc"),
+      limit(1)
+    )
+  );
+
+  const lastSentMessage = message?.docs[0].data();
+
   if (contact)
     return (
       <div>
@@ -32,9 +44,13 @@ function RoomCard({ room, user }) {
           <Avatar src={contact.data().photoURL} />
           <div className="flex flex-col flex-1 items-start ml-4">
             <p className="text-sm">{contact.data().displayName}</p>
-            <p className="text-xs opacity-50">Last sent message</p>
+            <p className="text-xs opacity-50">
+              {lastSentMessage.sender}: {lastSentMessage.content}
+            </p>
           </div>
-          <p className="text-xs opacity-50">5m</p>
+          <p className="text-xs opacity-50">
+            {sentTimeAgo(lastSentMessage.sent)}
+          </p>
         </div>
       </div>
     );

@@ -3,6 +3,8 @@ import React from "react";
 import Avatar from "./Avatar";
 import IconButton from "./IconButton";
 
+import sentTimeAgo from "../functions/sentTimeAgo";
+
 import { db } from "../firebase";
 import { doc, deleteDoc } from "firebase/firestore";
 import { useDocumentData } from "react-firebase-hooks/firestore";
@@ -34,27 +36,6 @@ function Message({ message, style, setRepliedMessage }) {
       messageStyle += " rounded-3xl";
       break;
   }
-
-  // Rendering the time of the message
-  const renderTime = () => {
-    const messageTime = message.data().sent?.toDate();
-    const currentTime = new Date();
-    const timeDelta = messageTime - currentTime;
-    const timeDeltaInSeconds = Math.round((timeDelta * -1) / 1000);
-    const timeDeltaInMinutes = Math.round((timeDelta * -1) / 1000 / 60);
-    const timeDeltaHours = Math.round((timeDelta * -1) / 1000 / 60 / 60);
-
-    const time =
-      timeDeltaInSeconds < 60
-        ? `Sent ${timeDeltaInSeconds}s ago`
-        : timeDeltaInMinutes < 60
-        ? `Sent ${timeDeltaInMinutes}m ago`
-        : timeDeltaHours < 60
-        ? `Sent ${timeDeltaHours}h ago`
-        : "";
-
-    return time;
-  };
 
   // Handling replied messages
   const replytoMessage = (message) => {
@@ -120,7 +101,9 @@ function Message({ message, style, setRepliedMessage }) {
           }`}
         >
           {/* Time */}
-          <p className="text-xs opacity-75 mt-1">{renderTime()}</p>
+          <p className="text-xs opacity-75 mt-1">
+            Sent {sentTimeAgo(message.data().sent)} ago
+          </p>
           {/* Photo */}
           <Avatar src={customUser?.photoURL} className="h-4 w-4 mt-1 mx-1" />
         </div>
