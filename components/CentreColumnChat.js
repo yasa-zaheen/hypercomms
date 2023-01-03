@@ -36,10 +36,10 @@ function CentreColumnChat({ user }) {
   useEffect(() => {
     // Extracts the information of the contact from the room document
     if (room) {
-      if (room.data().userInfo[0].email === user.email) {
+      if (room?.data()?.userInfo[0].email === user.email) {
         setContact(room.data().userInfo[1]);
       } else {
-        setContact(room.data().userInfo[0]);
+        setContact(room.data()?.userInfo[0]);
       }
     }
   }, [room]);
@@ -115,14 +115,22 @@ function CentreColumnChat({ user }) {
   const sendMessage = async (e) => {
     e.preventDefault();
 
+    const sentTime = serverTimestamp();
+
     if (text !== "") {
-      await addDoc(collection(db, `rooms/${room.id}/messages`), {
-        content: text,
-        sent: serverTimestamp(),
-        sender: user.email,
-        room: room.id,
-        replied: repliedMessage || null,
-      });
+      const messageRef = await addDoc(
+        collection(db, `rooms/${room.id}/messages`),
+        {
+          content: text,
+          sent: sentTime,
+          sender: user.email,
+          room: room.id,
+          replied: repliedMessage || null,
+          reactions: [],
+        }
+      );
+
+      console.log(messageRef.data);
 
       const userRef = doc(db, "users", user.email);
 
@@ -137,6 +145,16 @@ function CentreColumnChat({ user }) {
         });
       }
 
+      // Updating the last message
+      const roomRef = doc(db, "rooms", router.query.roomId);
+      await updateDoc(roomRef, {
+        lastSentMessage: {
+          content: text,
+          sent: sentTime,
+          sender: user.displayName,
+        },
+      });
+
       scroller.current.scrollIntoView({ behavior: "smooth" });
       setText("");
       setRepliedMessage("");
@@ -150,10 +168,10 @@ function CentreColumnChat({ user }) {
     <div className="w-1/2 flex flex-col space-y-4 h-full">
       {/* Topbar */}
       <div className="bg-blue-50 rounded-xl p-4 flex items-center">
-        <Avatar src={contact.photoURL} />
+        <Avatar src={contact?.photoURL} />
         <div className="flex flex-col ml-2 justify-around">
-          <p className="text-sm">{contact.displayName}</p>
-          <p className="text-xs opacity-50">{contact.email}</p>
+          <p className="text-sm">{contact?.displayName}</p>
+          <p className="text-xs opacity-50">{contact?.email}</p>
         </div>
       </div>
       {/* Chats */}
@@ -165,6 +183,7 @@ function CentreColumnChat({ user }) {
             style={getMessageStyle(message)}
             repliedMessage={repliedMessage}
             setRepliedMessage={setRepliedMessage}
+            user={user}
           />
         ))}
       </div>

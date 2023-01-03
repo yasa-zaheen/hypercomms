@@ -11,6 +11,7 @@ import {
   addDoc,
   doc,
   getDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import {
   useCollectionDataOnce,
@@ -48,10 +49,17 @@ function CentreColumnDashboard({ user }) {
       const contactSnap = await getDoc(contactRef);
 
       if (contactSnap.exists()) {
-        await addDoc(collection(db, "rooms"), {
+        const docRef = await addDoc(collection(db, "rooms"), {
           users: [customUser.data().email, contactSnap.data().email],
           userInfo: [customUser.data(), contactSnap.data()],
+          lastSentMessage: {
+            content: "Just started a conversation",
+            sent: serverTimestamp(),
+            sender: user.displayName,
+          },
         });
+
+        router.push(`/?roomId=${docRef.id}`);
       }
     }
   };

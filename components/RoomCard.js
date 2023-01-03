@@ -30,8 +30,6 @@ function RoomCard({ room, user }) {
     )
   );
 
-  const lastSentMessage = message?.docs[0].data();
-
   if (contact)
     return (
       <div>
@@ -45,11 +43,12 @@ function RoomCard({ room, user }) {
           <div className="flex flex-col flex-1 items-start ml-4">
             <p className="text-sm">{contact.data().displayName}</p>
             <p className="text-xs opacity-50">
-              {lastSentMessage.sender}: {lastSentMessage.content}
+              {room.data().lastSentMessage.sender}:{" "}
+              {room.data().lastSentMessage.content}
             </p>
           </div>
           <p className="text-xs opacity-50">
-            {sentTimeAgo(lastSentMessage.sent)}
+            {sentTimeAgo(room.data().lastSentMessage.sent)}
           </p>
         </div>
       </div>
