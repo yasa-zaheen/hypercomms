@@ -30,19 +30,24 @@ function CentreColumnChat({ user }) {
   const router = useRouter();
   const scroller = useRef();
 
-  // Fetching the contact
-  const [contact, setContact] = useState({});
+  // Fetching room information
   const [room] = useDocument(doc(db, "rooms", router.query.roomId));
-  useEffect(() => {
-    // Extracts the information of the contact from the room document
-    if (room) {
-      if (room?.data()?.userInfo[0].email === user.email) {
-        setContact(room.data().userInfo[1]);
-      } else {
-        setContact(room.data()?.userInfo[0]);
-      }
-    }
-  }, [room]);
+
+  const displayName = room?.data().groupChatName
+    ? room?.data().groupChatName
+    : room?.data()?.userInfo[0].email === user.email
+    ? room?.data().userInfo[1].displayName
+    : room?.data().userInfo[0].displayName;
+
+  const email =
+    room?.data()?.userInfo[0].email === user.email
+      ? room?.data().userInfo[1].email
+      : room?.data().userInfo[0].email;
+
+  const displayPicture =
+    room?.data()?.userInfo[0].email === user.email
+      ? room?.data().userInfo[1].photoURL
+      : room?.data().userInfo[0].photoURL;
 
   // Fetching the messsages
   const [messages] = useCollection(
@@ -168,10 +173,12 @@ function CentreColumnChat({ user }) {
     <div className="w-1/2 flex flex-col space-y-4 h-full">
       {/* Topbar */}
       <div className="bg-blue-50 rounded-xl p-4 flex items-center">
-        <Avatar src={contact?.photoURL} />
+        <Avatar src={displayPicture} />
         <div className="flex flex-col ml-2 justify-around">
-          <p className="text-sm">{contact?.displayName}</p>
-          <p className="text-xs opacity-50">{contact?.email}</p>
+          <p className="text-sm">{displayName}</p>
+          {!room?.data().groupChatName ? (
+            <p className="text-xs opacity-50">{email}</p>
+          ) : null}
         </div>
       </div>
       {/* Chats */}

@@ -135,7 +135,7 @@ function Message({ message, style, setRepliedMessage, user }) {
       {/* Time and photo */}
       {styleOfMessage === "last" || styleOfMessage === "independent" ? (
         <div
-          className={`flex items-center ${
+          className={`flex items-center mb-4 ${
             userSentMessage ? "flex-row" : "flex-row-reverse"
           }`}
         >

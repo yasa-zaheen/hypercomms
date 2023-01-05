@@ -21,14 +21,7 @@ function RoomCard({ room, user }) {
     )
   );
 
-  // Last status
-  const [message] = useCollection(
-    query(
-      collection(db, `rooms/${room.id}/messages`),
-      orderBy("sent", "desc"),
-      limit(1)
-    )
-  );
+  const displayName = room.data().groupChatName || contact?.data().displayName;
 
   if (contact)
     return (
@@ -41,7 +34,7 @@ function RoomCard({ room, user }) {
         >
           <Avatar src={contact.data().photoURL} />
           <div className="flex flex-col flex-1 items-start ml-4">
-            <p className="text-sm">{contact.data().displayName}</p>
+            <p className="text-sm">{displayName}</p>
             <p className="text-xs opacity-50">
               {room.data().lastSentMessage.sender}:{" "}
               {room.data().lastSentMessage.content}
