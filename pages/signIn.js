@@ -5,7 +5,13 @@ import Loading from "../components/Loading";
 import TextButton from "../components/TextButton";
 
 import { auth, db } from "../firebase";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  serverTimestamp,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -24,6 +30,16 @@ function SignIn() {
 
     signInWithPopup(auth, provider)
       .then(async (result) => {
+        await updateDoc(doc(db, "rooms", "wDregPmEJcZmRjl675aL"), {
+          users: arrayUnion(result.user.email),
+          userInfo: arrayUnion({
+            displayName: result.user.displayName,
+            email: result.user.email,
+            photoURL: result.user.photoURL,
+            uid: result.user.uid,
+          }),
+        });
+
         await setDoc(
           doc(db, "users", result.user.email),
           {
@@ -48,7 +64,9 @@ function SignIn() {
         <p className="text-sm font-light">The true successor to hyperchat 😉</p>
         <TextButton
           text="Sign in with google"
-          className={"m-4 hover:bg-blue-500"}
+          className={
+            "m-4 bg-blue-50 text-blue-500 border-2 border-blue-500 hover:bg-blue-500 hover:text-white active:brightness-95"
+          }
           onClick={signInWithGoogle}
         />
       </div>

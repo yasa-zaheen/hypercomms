@@ -47,15 +47,19 @@ function CentreColumnDashboard({ user }) {
   const startConversation = async (email) => {
     let conversationExists = false;
 
+    console.log("Starting a conversation");
+    console.log("Checking if a conversation exists");
+
     // Check if there is existing conversation
     rooms.forEach((room) => {
-      if (room.data().users.includes(email)) {
+      if (room.data().users.includes(email) && room.data().users.length === 2) {
         conversationExists = true;
         router.push(`/?roomId=${room.id}`);
       }
     });
 
     // Else create a conversation
+    console.log("Creating a conversation");
     if (!conversationExists) {
       const contactRef = doc(db, "users", email);
       const contactSnap = await getDoc(contactRef);
@@ -127,6 +131,7 @@ function CentreColumnDashboard({ user }) {
   return (
     <div className="w-1/2 flex flex-col h-full">
       {/* News and updates */}
+
       <div className="flex space-x-4">
         <div className="w-1/2 p-4 rounded-xl bg-gradient-to-tr from-[#d3f3f1] to-[#b5c6e0]">
           <p className="text-2xl font-semibold">What's new</p>
@@ -138,10 +143,10 @@ function CentreColumnDashboard({ user }) {
         <div className="w-1/2 p-4 rounded-xl bg-gradient-to-tr from-[#e1dae6] to-[#f6c4ed]">
           <p className="text-2xl font-semibold">Upcoming</p>
           <p className="text-sm opacity-75">
-            - Dark mode
+            - Landing page
             <br />
-            - Group chats
-            <br />- Twitter emojis
+            - Dark mode
+            <br />- Typing indicators
           </p>
         </div>
       </div>
