@@ -52,7 +52,11 @@ function CentreColumnDashboard({ user }) {
 
     // Check if there is existing conversation
     rooms.forEach((room) => {
-      if (room.data().users.includes(email) && !room.data().groupChatName) {
+      if (
+        room.data().users.includes(email) &&
+        room.data().users.includes(user.email) &&
+        !room.data().groupChatName
+      ) {
         conversationExists = true;
         router.push(`/?roomId=${room.id}`);
       }
