@@ -32,6 +32,7 @@ export default function Home() {
     "tpmgodguin@gmail.com",
     "lamiyazahin17@gmail.com",
     "fuad.quazi2004@gmail.com",
+    "zarahkhondoker@gmail.com",
   ];
 
   if (loading) return <Loading />;
