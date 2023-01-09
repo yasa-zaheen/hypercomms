@@ -12,7 +12,7 @@ function RightColumn() {
 
   return (
     <div className="w-1/4 flex flex-col space-y-4 rounded-xl">
-      <div className=" bg-orange-50 flex-1 rounded-xl p-4">
+      <div className=" bg-orange-50 flex-1 overflow-scroll scrollbar-hide rounded-xl p-4">
         <p className="text-2xl mb-4 font-semibold">Leaderboard</p>
         {users?.map((user) => (
           <div className="flex items-center mb-4">
