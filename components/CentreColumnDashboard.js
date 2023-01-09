@@ -158,7 +158,7 @@ function CentreColumnDashboard({ user }) {
         <p className="text-sm opacity-75">
           Click on their cards to start chatting with them!
         </p>
-        <div className="grid grid-flow-col grid-cols-3 space-x-4 mt-4">
+        <div className="grid grid-flow-row grid-cols-3 gap-x-4 gap-y-4 mt-4">
           <div
             className="bg-teal-50 p-4 rounded-xl flex items-center space-x-4 cursor-pointer hover:scale-105 hover:bg-teal-100 hover:shadow-lg active:brightness-75 duration-75 ease-in-out"
             onClick={() => {
