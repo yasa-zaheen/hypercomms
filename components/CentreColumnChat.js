@@ -121,12 +121,14 @@ function CentreColumnChat({ user }) {
     e.preventDefault();
 
     const sentTime = serverTimestamp();
+    const inputText = text;
+    setText("");
 
     if (text !== "") {
       const messageRef = await addDoc(
         collection(db, `rooms/${room.id}/messages`),
         {
-          content: text,
+          content: inputText,
           sent: sentTime,
           sender: user.email,
           room: room.id,
@@ -154,14 +156,13 @@ function CentreColumnChat({ user }) {
       const roomRef = doc(db, "rooms", router.query.roomId);
       await updateDoc(roomRef, {
         lastSentMessage: {
-          content: text,
+          content: inputText,
           sent: sentTime,
           sender: user.displayName,
         },
       });
 
       scroller.current.scrollIntoView({ behavior: "smooth" });
-      setText("");
       setRepliedMessage("");
     }
   };
