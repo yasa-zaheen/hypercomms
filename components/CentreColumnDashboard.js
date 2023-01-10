@@ -47,9 +47,6 @@ function CentreColumnDashboard({ user }) {
   const startConversation = async (email) => {
     let conversationExists = false;
 
-    console.log("Starting a conversation");
-    console.log("Checking if a conversation exists");
-
     // Check if there is existing conversation
     rooms.forEach((room) => {
       if (
@@ -63,7 +60,6 @@ function CentreColumnDashboard({ user }) {
     });
 
     // Else create a conversation
-    console.log("Creating a conversation");
     if (!conversationExists) {
       const contactRef = doc(db, "users", email);
       const contactSnap = await getDoc(contactRef);
@@ -133,7 +129,7 @@ function CentreColumnDashboard({ user }) {
   };
 
   return (
-    <div className="w-1/2 flex flex-col h-full">
+    <div className="w-1/2 flex flex-col overflow-scroll scrollbar-hide h-full">
       {/* News and updates */}
 
       <div className="flex space-x-4">
