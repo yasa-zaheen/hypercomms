@@ -170,7 +170,7 @@ function CentreColumnChat({ user }) {
   const [repliedMessage, setRepliedMessage] = useState();
 
   return (
-    <div className="w-1/2 flex flex-col space-y-4 h-full">
+    <div className="w-1/2 flex flex-col space-y-4 px-4 h-full">
       {/* Topbar */}
       <div className="bg-blue-50 rounded-xl p-4 flex items-center">
         <Avatar src={displayPicture} />

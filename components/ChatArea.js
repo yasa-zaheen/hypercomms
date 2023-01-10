@@ -10,7 +10,7 @@ function ChatArea({ user }) {
   const router = useRouter();
 
   return (
-    <div className="h-screen w-full overflow-hidden flex space-x-4 p-4">
+    <div className="h-screen w-full overflow-hidden flex p-4">
       {/* Left column */}
       <LeftColumn user={user} />
       {/* Centre column */}

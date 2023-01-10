@@ -129,7 +129,7 @@ function CentreColumnDashboard({ user }) {
   };
 
   return (
-    <div className="w-1/2 flex flex-col overflow-scroll scrollbar-hide h-full">
+    <div className="w-1/2 flex flex-col overflow-scroll scrollbar-hide px-4 h-full">
       {/* News and updates */}
 
       <div className="flex space-x-4">
