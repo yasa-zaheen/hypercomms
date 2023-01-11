@@ -24,9 +24,15 @@ import {
   useDocument,
 } from "react-firebase-hooks/firestore";
 
-import { PaperAirplaneIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  BellAlertIcon,
+  PaperAirplaneIcon,
+  Squares2X2Icon,
+  TrophyIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 
-function CentreColumnChat({ user }) {
+function CentreColumnChat({ user, setViewRight, setViewLeft }) {
   const router = useRouter();
   const scroller = useRef();
 
@@ -137,8 +143,6 @@ function CentreColumnChat({ user }) {
         }
       );
 
-      console.log(messageRef.data);
-
       const userRef = doc(db, "users", user.email);
 
       // Points for replied message
@@ -171,7 +175,7 @@ function CentreColumnChat({ user }) {
   const [repliedMessage, setRepliedMessage] = useState();
 
   return (
-    <div className="w-1/2 flex flex-col space-y-4 px-4 h-full">
+    <div className="w-full md:w-1/2 flex flex-col overflow-scroll scrollbar-hide p-4 md:py-0 h-full">
       {/* Topbar */}
       <div className="bg-blue-50 rounded-xl p-4 flex items-center">
         <Avatar src={displayPicture} />
@@ -181,6 +185,28 @@ function CentreColumnChat({ user }) {
             <p className="text-xs opacity-50">{email}</p>
           ) : null}
         </div>
+        <div className="flex-1"></div>
+        <IconButton
+          Icon={Squares2X2Icon}
+          onClick={() => {
+            router.push("/");
+          }}
+          className={"bg-blue-200 md:hidden"}
+        />
+        <IconButton
+          Icon={TrophyIcon}
+          onClick={() => {
+            setViewRight(true);
+          }}
+          className={"bg-blue-200 mx-2 md:hidden"}
+        />
+        <IconButton
+          Icon={BellAlertIcon}
+          onClick={() => {
+            setViewLeft(true);
+          }}
+          className={"bg-blue-200 md:hidden"}
+        />
       </div>
       {/* Chats */}
       <div className="flex-1 flex flex-col-reverse  overflow-y-scroll rounded-xl scrollbar-hide">
@@ -225,7 +251,7 @@ function CentreColumnChat({ user }) {
             placeholder={"Don't be shy, Say hi!"}
             value={text}
             setValue={setText}
-            className="mt-0 rounded-xl bg-white p-3"
+            className="mt-0 rounded-xl bg-white p-3 text-lg"
           />
           <IconButton
             Icon={PaperAirplaneIcon}

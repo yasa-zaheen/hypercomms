@@ -23,12 +23,13 @@ import {
 } from "react-firebase-hooks/firestore";
 
 import {
+  BellAlertIcon,
+  TrophyIcon,
   UserGroupIcon,
-  UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 
-function CentreColumnDashboard({ user }) {
+function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
   const router = useRouter();
   const [viewGroupChatPanel, setViewGroupChatPanel] = useState(false);
   const [groupChatName, setGroupChatName] = useState("");
@@ -129,18 +130,18 @@ function CentreColumnDashboard({ user }) {
   };
 
   return (
-    <div className="w-1/2 flex flex-col overflow-scroll scrollbar-hide px-4 h-full">
+    <div className="w-full md:w-1/2 flex flex-col overflow-scroll scrollbar-hide p-4 md:py-0 h-full">
       {/* News and updates */}
 
-      <div className="flex space-x-4">
-        <div className="w-1/2 p-4 rounded-xl bg-gradient-to-tr from-[#d3f3f1] to-[#b5c6e0]">
+      <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+        <div className="w-full p-4 rounded-xl bg-gradient-to-tr from-[#d3f3f1] to-[#b5c6e0] md:w-1/2">
           <p className="text-2xl font-semibold">What's new</p>
           <p className="text-sm opacity-75">
             Well basically everything! Welcome to Eden(codename: hypercomms 😉).
             Try out the app and let me know how it works out!
           </p>
         </div>
-        <div className="w-1/2 p-4 rounded-xl bg-gradient-to-tr from-[#e1dae6] to-[#f6c4ed]">
+        <div className="w-full p-4 rounded-xl bg-gradient-to-tr from-[#e1dae6] to-[#f6c4ed] md:w-1/2">
           <p className="text-2xl font-semibold">Upcoming</p>
           <p className="text-sm opacity-75">
             - Landing page
@@ -158,7 +159,7 @@ function CentreColumnDashboard({ user }) {
         <p className="text-sm opacity-75">
           Click on their cards to start chatting with them!
         </p>
-        <div className="grid grid-flow-row grid-cols-3 gap-x-4 gap-y-4 mt-4">
+        <div className="grid grid-flow-row grid-cols-1 gap-x-4 gap-y-4 mt-4 md:grid-cols-3">
           <div
             className="bg-teal-50 p-4 rounded-xl flex items-center space-x-4 cursor-pointer hover:scale-105 hover:bg-teal-100 hover:shadow-lg active:brightness-75 duration-75 ease-in-out"
             onClick={() => {
@@ -169,6 +170,34 @@ function CentreColumnDashboard({ user }) {
             <div className="flex flex-col">
               <p className="font-semibold">Group Chat</p>
               <p className="text-xs opacity-75">Or start a group chat!</p>
+            </div>
+          </div>
+          <div
+            className="bg-fuchsia-50 p-4 rounded-xl flex items-center space-x-4 cursor-pointer hover:scale-105 hover:bg-fuchsia-100 hover:shadow-lg active:brightness-75 duration-75 ease-in-out md:hidden"
+            onClick={() => {
+              setViewLeft(true);
+            }}
+          >
+            <IconButton Icon={BellAlertIcon} className={"bg-fuchsia-200"} />
+            <div className="flex flex-col">
+              <p className="font-semibold">Conversations</p>
+              <p className="text-xs opacity-75">
+                Click here to view your conversations
+              </p>
+            </div>
+          </div>
+          <div
+            className="bg-rose-50 p-4 rounded-xl flex items-center space-x-4 cursor-pointer hover:scale-105 hover:bg-rose-100 hover:shadow-lg active:brightness-75 duration-75 ease-in-out md:hidden"
+            onClick={() => {
+              setViewRight(true);
+            }}
+          >
+            <IconButton Icon={TrophyIcon} className={"bg-rose-200"} />
+            <div className="flex flex-col">
+              <p className="font-semibold">Leaderboard</p>
+              <p className="text-xs opacity-75">
+                Click here to view the Leaderboard
+              </p>
             </div>
           </div>
           {users?.map((user) => (
@@ -190,7 +219,7 @@ function CentreColumnDashboard({ user }) {
         <div className="h-screen w-full flex items-center justify-center  absolute backdrop-brightness-50 top-0 left-0 z-50">
           <form
             id="groupChatForm"
-            className="p-4 bg-white rounded-xl"
+            className="p-4 bg-white h-3/4 w-3/4 overflow-scroll scrollbar-hide rounded-xl"
             onSubmit={startGroupChat}
           >
             <div className="flex items-center justify-between">
@@ -212,7 +241,7 @@ function CentreColumnDashboard({ user }) {
               className={"bg-gray-100 rounded-xl mb-4 mt-4"}
               Icon={UserGroupIcon}
             />
-            <div className="grid grid-flow-col grid-cols-3 space-x-4 select-none">
+            <div className="grid grid-flow-row grid-cols-1 gap-x-4 gap-y-4 select-none md:grid-cols-3">
               {users?.map((user) => (
                 <div
                   className="bg-gray-50 flex space-x-4 items-center p-4 rounded-xl cursor-pointer"

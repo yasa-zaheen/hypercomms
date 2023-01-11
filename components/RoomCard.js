@@ -8,7 +8,7 @@ import { db } from "../firebase";
 import { collection, doc, limit, orderBy, query } from "firebase/firestore";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 
-function RoomCard({ room, user }) {
+function RoomCard({ room, user, setViewLeft }) {
   const router = useRouter();
 
   const [contact] = useDocument(
@@ -29,6 +29,7 @@ function RoomCard({ room, user }) {
         <div
           onClick={() => {
             router.push(`/?roomId=${room.id}`);
+            setViewLeft(false);
           }}
           className="flex p-4 items-center rounded-xl bg-gray-50 cursor-pointer hover:scale-105 hover:bg-green-100 hover:shadow-lg hover:shadow-gray-200 active:brightness-75 duration-75 ease-in-out"
         >

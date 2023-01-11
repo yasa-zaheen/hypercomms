@@ -1,19 +1,43 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { db } from "../firebase";
 import { collection, orderBy, query } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import Avatar from "./Avatar";
 
-function RightColumn() {
+import Avatar from "./Avatar";
+import IconButton from "./IconButton";
+
+import { Squares2X2Icon } from "@heroicons/react/24/outline";
+
+function RightColumn({ viewRight, setViewRight }) {
   const [users] = useCollectionData(
     query(collection(db, "users"), orderBy("points", "desc"))
   );
 
+  const container = useRef();
+
+  useEffect(() => {
+    viewRight
+      ? container.current.classList.remove("-translate-x-full")
+      : container.current.classList.add("-translate-x-full");
+  }, [viewRight]);
+
   return (
-    <div className="w-1/4 flex flex-col space-y-4 rounded-xl">
+    <div
+      ref={container}
+      className="-translate-x-full bg-white w-full absolute p-4 flex flex-col space-y-4 rounded-xl md:w-1/4 md:p-0 md:relative md:translate-x-0 duration-200 ease-in-out"
+    >
       <div className=" bg-orange-50 flex-1 overflow-scroll scrollbar-hide rounded-xl p-4">
-        <p className="text-2xl mb-4 font-semibold">Leaderboard</p>
+        <div className="mb-4 flex items-center justify-between">
+          <p className="text-2xl font-semibold">Leaderboard</p>
+          <IconButton
+            Icon={Squares2X2Icon}
+            onClick={() => {
+              setViewRight(false);
+            }}
+            className={"bg-orange-200 md:hidden"}
+          />
+        </div>
         {users?.map((user) => (
           <div className="flex items-center mb-4">
             <Avatar src={user.photoURL} />

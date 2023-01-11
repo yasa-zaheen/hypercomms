@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 
 import LeftColumn from "./LeftColumn";
@@ -8,19 +8,29 @@ import RightColumn from "./RightColumn";
 
 function ChatArea({ user }) {
   const router = useRouter();
+  const [viewLeft, setViewLeft] = useState(false);
+  const [viewRight, setViewRight] = useState(false);
 
   return (
-    <div className="h-screen w-full overflow-hidden flex p-4">
+    <div className="h-screen w-full overflow-hidden scrollbar-hide flex md:p-4">
       {/* Left column */}
-      <LeftColumn user={user} />
+      <LeftColumn viewLeft={viewLeft} setViewLeft={setViewLeft} user={user} />
       {/* Centre column */}
       {router.query.roomId ? (
-        <CentreColumnChat user={user} />
+        <CentreColumnChat
+          setViewLeft={setViewLeft}
+          setViewRight={setViewRight}
+          user={user}
+        />
       ) : (
-        <CentreColumnDashboard user={user} />
+        <CentreColumnDashboard
+          setViewLeft={setViewLeft}
+          setViewRight={setViewRight}
+          user={user}
+        />
       )}
       {/* Right column */}
-      <RightColumn />
+      <RightColumn viewRight={viewRight} setViewRight={setViewRight} />
     </div>
   );
 }
