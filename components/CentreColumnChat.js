@@ -130,7 +130,9 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
 
     const sentTime = serverTimestamp();
     const inputText = text;
+    const repliedText = repliedMessage;
     setText("");
+    setRepliedMessage("");
 
     if (text !== "") {
       const messageRef = await addDoc(
@@ -141,7 +143,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
           sender: user.email,
           senderName: user.displayName,
           room: room.id,
-          replied: repliedMessage || null,
+          replied: repliedText || null,
           reactions: [],
         }
       );
@@ -170,7 +172,6 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
       });
 
       scroller.current.scrollIntoView({ behavior: "smooth" });
-      setRepliedMessage("");
     }
   };
 
