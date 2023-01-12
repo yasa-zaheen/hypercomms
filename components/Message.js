@@ -98,7 +98,7 @@ function Message({ message, style, setRepliedMessage, user }) {
         >
           {/* Time */}
           <p className="text-xs opacity-75 mt-1">
-            {message.data().senderName.split(" ")[0] || message.data().sender}
+            {message?.data().senderName?.split(" ")[0] || message.data().sender}
           </p>
           {/* Photo */}
         </div>
