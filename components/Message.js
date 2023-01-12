@@ -27,7 +27,7 @@ function Message({ message, style, setRepliedMessage, user }) {
   let messageStyle = `w-full flex flex-col cursor-pointer ${
     userSentMessage
       ? "bg-rose-500 items-end"
-      : "bg-gray-100 text-black items-start"
+      : "bg-gray-100 dark:bg-zinc-800 dark:text-white text-black items-start"
   } w-fit px-4 py-2 text-white rounded-3xl ease-in-out`;
   switch (styleOfMessage) {
     case "first":
@@ -130,7 +130,7 @@ function Message({ message, style, setRepliedMessage, user }) {
           className={`h-8 w-8 mx-1 ${
             userSentMessage
               ? "bg-rose-500 text-white"
-              : "bg-gray-100 text-black"
+              : "bg-gray-100 text-black dark:bg-zinc-800 dark:text-white"
           } scale-0 group-hover:scale-100 `}
           Icon={ArrowUturnLeftIcon}
           onClick={() => {
@@ -139,7 +139,7 @@ function Message({ message, style, setRepliedMessage, user }) {
         />
         {userSentMessage ? (
           <IconButton
-            className={`text-rose-500 mx-1 hover:bg-rose-50
+            className={`text-rose-500 mx-1 hover:bg-rose-50 dark:hover:bg-rose-800
           scale-0 group-hover:scale-100 `}
             Icon={TrashIcon}
             onClick={deleteMessage}

@@ -58,19 +58,19 @@ function SignIn() {
   };
 
   return (
-    <div className="h-screen w-full space-x-4 overflow-hidden flex p-4 ">
-      <div className="w-1/3 bg-white rounded-xl overflow-hidden flex flex-col items-center justify-center">
+    <div className="h-screen w-full space-x-4 overflow-hidden flex p-4 bg-white dark:bg-black text-black dark:text-white ">
+      <div className="w-full rounded-xl overflow-hidden flex flex-col items-center justify-center md:w-1/3">
         <p className="text-2xl font-semibold">Welcome to hypercomms!</p>
         <p className="text-sm font-light">The true successor to hyperchat 😉</p>
         <TextButton
           text="Sign in with google"
           className={
-            "m-4 bg-blue-50 text-blue-500 border-2 border-blue-500 hover:bg-blue-500 hover:text-white active:brightness-95"
+            "m-4 bg-blue-50 dark:bg-blue-900 text-blue-500 dark:text-blue-300 border-2 border-blue-500 dark:border-blue-300 hover:bg-blue-500 hover:text-white active:brightness-95"
           }
           onClick={signInWithGoogle}
         />
       </div>
-      <div className="w-2/3 rounded-xl relative block overflow-hidden">
+      <div className="w-2/3 rounded-xl relative overflow-hidden hidden md:block">
         <Image
           src={signInPic}
           alt="Sign in picture"

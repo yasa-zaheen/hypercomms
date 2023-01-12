@@ -2,7 +2,7 @@ import LinkButton from "./LinkButton";
 
 function Landing() {
   return (
-    <div className="h-screen w-full">
+    <div className="h-screen w-full bg-white dark:bg-black text-black dark:text-white">
       <div className="w-full p-4 flex items-center justify-between">
         <p className="text-xl font-semibold">hypercomms</p>
         <LinkButton

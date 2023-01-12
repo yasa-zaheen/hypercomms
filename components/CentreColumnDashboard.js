@@ -130,18 +130,18 @@ function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
   };
 
   return (
-    <div className="w-full md:w-1/2 flex flex-col overflow-scroll scrollbar-hide p-4 md:py-0 h-full">
+    <div className="w-full h-full dark:bg-black dark:text-white rounded-xl flex flex-col overflow-scroll scrollbar-hide p-4 md:py-0 md:w-1/2 ">
       {/* News and updates */}
 
       <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-        <div className="w-full p-4 rounded-xl bg-gradient-to-tr from-[#d3f3f1] to-[#b5c6e0] md:w-1/2">
+        <div className="w-full p-4 rounded-xl bg-gradient-to-tr from-[#d3f3f1] to-[#b5c6e0] dark:from-[#103783] dark:to-[#9bafd9] md:w-1/2">
           <p className="text-2xl font-semibold">What's new</p>
           <p className="text-sm opacity-75">
             Well basically everything! Welcome to Eden(codename: hypercomms 😉).
             Try out the app and let me know how it works out!
           </p>
         </div>
-        <div className="w-full p-4 rounded-xl bg-gradient-to-tr from-[#e1dae6] to-[#f6c4ed] md:w-1/2">
+        <div className="w-full p-4 rounded-xl bg-gradient-to-tr from-[#e1dae6] to-[#f6c4ed] dark:from-[#0b3866] dark:to-[#95f9c3] md:w-1/2">
           <p className="text-2xl font-semibold">Upcoming</p>
           <p className="text-sm opacity-75">
             - Landing page
@@ -160,25 +160,33 @@ function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
           Click on their cards to start chatting with them!
         </p>
         <div className="grid grid-flow-row grid-cols-1 gap-x-4 gap-y-4 mt-4 md:grid-cols-3">
+          {/* Group chat button */}
           <div
-            className="bg-teal-50 p-4 rounded-xl flex items-center space-x-4 cursor-pointer hover:scale-105 hover:bg-teal-100 hover:shadow-lg active:brightness-75 duration-75 ease-in-out"
+            className="bg-teal-50 dark:bg-teal-900 p-4 rounded-xl flex items-center space-x-4 cursor-pointer hover:scale-105 hover:bg-teal-100 dark:hover:bg-teal-800 hover:shadow-lg active:brightness-75 duration-75 ease-in-out"
             onClick={() => {
               setViewGroupChatPanel(true);
             }}
           >
-            <IconButton Icon={UserGroupIcon} className={"bg-teal-200"} />
+            <IconButton
+              Icon={UserGroupIcon}
+              className={"bg-teal-200 dark:bg-teal-700"}
+            />
             <div className="flex flex-col">
               <p className="font-semibold">Group Chat</p>
-              <p className="text-xs opacity-75">Or start a group chat!</p>
+              <p className="text-xs opacity-75">Start a group chat!</p>
             </div>
           </div>
+          {/* Conversations button */}
           <div
-            className="bg-fuchsia-50 p-4 rounded-xl flex items-center space-x-4 cursor-pointer hover:scale-105 hover:bg-fuchsia-100 hover:shadow-lg active:brightness-75 duration-75 ease-in-out md:hidden"
+            className="bg-fuchsia-50 dark:bg-fuchsia-900 p-4 rounded-xl flex items-center space-x-4 cursor-pointer hover:scale-105 hover:bg-fuchsia-100 dark:hover:bg-fuchsia-800 hover:shadow-lg active:brightness-75 duration-75 ease-in-out md:hidden"
             onClick={() => {
               setViewLeft(true);
             }}
           >
-            <IconButton Icon={BellAlertIcon} className={"bg-fuchsia-200"} />
+            <IconButton
+              Icon={BellAlertIcon}
+              className={"bg-fuchsia-200 dark:bg-fuchsia-700"}
+            />
             <div className="flex flex-col">
               <p className="font-semibold">Conversations</p>
               <p className="text-xs opacity-75">
@@ -186,13 +194,17 @@ function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
               </p>
             </div>
           </div>
+          {/* Leaderboards button */}
           <div
-            className="bg-rose-50 p-4 rounded-xl flex items-center space-x-4 cursor-pointer hover:scale-105 hover:bg-rose-100 hover:shadow-lg active:brightness-75 duration-75 ease-in-out md:hidden"
+            className="bg-rose-50 dark:bg-rose-900 p-4 rounded-xl flex items-center space-x-4 cursor-pointer hover:scale-105 hover:bg-rose-100 dark:hover:bg-rose-800 hover:shadow-lg active:brightness-75 duration-75 ease-in-out md:hidden"
             onClick={() => {
               setViewRight(true);
             }}
           >
-            <IconButton Icon={TrophyIcon} className={"bg-rose-200"} />
+            <IconButton
+              Icon={TrophyIcon}
+              className={"bg-rose-200 dark:bg-rose-800"}
+            />
             <div className="flex flex-col">
               <p className="font-semibold">Leaderboard</p>
               <p className="text-xs opacity-75">
@@ -202,7 +214,7 @@ function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
           </div>
           {users?.map((user) => (
             <div
-              className="bg-gray-50 flex space-x-4 items-center p-4 rounded-xl cursor-pointer hover:scale-105 hover:bg-purple-100 hover:shadow-lg hover:shadow-gray-200 active:brightness-75 duration-75 ease-in-out"
+              className="bg-gray-50 dark:bg-zinc-800 flex space-x-4 items-center p-4 rounded-xl cursor-pointer hover:scale-105 hover:bg-purple-100 dark:hover:bg-violet-900 hover:shadow-lg active:brightness-75 duration-75 ease-in-out"
               onClick={() => {
                 startConversation(user.email);
               }}
@@ -216,10 +228,10 @@ function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
 
       {/* Group chat interface */}
       {viewGroupChatPanel ? (
-        <div className="h-screen w-full flex items-center justify-center  absolute backdrop-brightness-50 top-0 left-0 z-50">
+        <div className="h-screen w-full flex items-center justify-center absolute backdrop-brightness-50 top-0 left-0 z-50">
           <form
             id="groupChatForm"
-            className="p-4 bg-white h-3/4 w-3/4 overflow-scroll scrollbar-hide rounded-xl"
+            className="p-4 bg-white dark:bg-black h-3/4 w-3/4 overflow-scroll scrollbar-hide rounded-xl"
             onSubmit={startGroupChat}
           >
             <div className="flex items-center justify-between">
@@ -228,7 +240,7 @@ function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
               </p>
               <IconButton
                 Icon={XMarkIcon}
-                className="bg-red-50 text-red-500"
+                className="bg-red-50 dark:bg-red-800 text-red-500 dark:text-white"
                 onClick={() => {
                   setViewGroupChatPanel(false);
                 }}
@@ -238,13 +250,13 @@ function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
               value={groupChatName}
               setValue={setGroupChatName}
               placeholder="Give a name for the group chat"
-              className={"bg-gray-100 rounded-xl mb-4 mt-4"}
+              className={"bg-gray-100 dark:bg-zinc-800 rounded-xl mb-4 mt-4"}
               Icon={UserGroupIcon}
             />
             <div className="grid grid-flow-row grid-cols-1 gap-x-4 gap-y-4 select-none md:grid-cols-3">
               {users?.map((user) => (
                 <div
-                  className="bg-gray-50 flex space-x-4 items-center p-4 rounded-xl cursor-pointer"
+                  className="bg-gray-50 dark:bg-zinc-800 flex space-x-4 items-center p-4 rounded-xl cursor-pointer"
                   onClick={clickCheckBox}
                 >
                   <input
@@ -263,7 +275,9 @@ function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
             </div>
             <TextButton
               text="Start group chat"
-              className={"bg-red-50 text-red-500 w-full mt-4"}
+              className={
+                "bg-sky-50 text-sky-500 dark:bg-sky-900 dark:text-white w-full mt-4"
+              }
               submit
             />
           </form>

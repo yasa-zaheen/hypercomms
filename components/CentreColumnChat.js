@@ -176,9 +176,9 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
   const [repliedMessage, setRepliedMessage] = useState();
 
   return (
-    <div className="w-full md:w-1/2 flex flex-col overflow-scroll scrollbar-hide p-4 md:py-0 h-full">
+    <div className="w-full md:w-1/2 dark:text-white flex flex-col overflow-scroll scrollbar-hide p-4 md:py-0 h-full">
       {/* Topbar */}
-      <div className="bg-blue-50 rounded-xl p-4 flex items-center">
+      <div className="bg-blue-50 dark:bg-zinc-800 rounded-xl p-4 flex items-center">
         <Avatar src={displayPicture} />
         <div className="flex flex-col ml-2 justify-around">
           <p className="text-sm">{displayName}</p>
@@ -224,7 +224,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
       </div>
       {/* Input */}
       <form
-        className="bg-green-50 rounded-xl p-4 flex flex-col"
+        className="bg-green-50 dark:bg-zinc-800 rounded-xl p-4 flex flex-col"
         onSubmit={sendMessage}
       >
         {/* Replied message container */}
@@ -235,7 +235,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
         >
           <IconButton
             Icon={XMarkIcon}
-            className="bg-green-200"
+            className="bg-green-200 dark:bg-cyan-900"
             onClick={() => {
               setRepliedMessage();
             }}
@@ -252,11 +252,11 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
             placeholder={"Don't be shy, Say hi!"}
             value={text}
             setValue={setText}
-            className="mt-0 rounded-xl bg-white p-3 text-lg"
+            className="mt-0 rounded-xl bg-white dark:bg-zinc-700 p-3 text-lg md:text-sm"
           />
           <IconButton
             Icon={PaperAirplaneIcon}
-            className="bg-green-200"
+            className="bg-green-200 dark:bg-rose-600"
             submit
           />
         </div>
