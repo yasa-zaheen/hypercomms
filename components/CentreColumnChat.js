@@ -137,6 +137,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
           content: inputText,
           sent: sentTime,
           sender: user.email,
+          senderName: user.displayName,
           room: room.id,
           replied: repliedMessage || null,
           reactions: [],

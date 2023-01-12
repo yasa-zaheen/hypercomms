@@ -88,6 +88,21 @@ function Message({ message, style, setRepliedMessage, user }) {
         userSentMessage ? "items-end" : "items-start"
       }`}
     >
+      {/* Sender name */}
+      {/* Time and photo */}
+      {styleOfMessage === "first" || styleOfMessage === "independent" ? (
+        <div
+          className={`flex items-center mb-1 mx-2 ${
+            userSentMessage ? "flex-row" : "flex-row-reverse"
+          }`}
+        >
+          {/* Time */}
+          <p className="text-xs opacity-75 mt-1">
+            {message.data().senderName || message.data().sender}
+          </p>
+          {/* Photo */}
+        </div>
+      ) : null}
       {/* Message content, reply button, delete button, replied message and likes*/}
       <div
         className={`flex items-center ${
@@ -140,11 +155,11 @@ function Message({ message, style, setRepliedMessage, user }) {
           }`}
         >
           {/* Time */}
-          <p className="text-xs opacity-75 mt-1">
+          <p className="text-xs opacity-75 mt-1 mx-1">
             Sent {sentTimeAgo(message.data().sent)} ago
           </p>
           {/* Photo */}
-          <Avatar src={customUser?.photoURL} className="h-4 w-4 mt-1 mx-1" />
+          <Avatar src={customUser?.photoURL} className="h-6 w-6 mt-1 mx-1" />
         </div>
       ) : null}
     </div>
