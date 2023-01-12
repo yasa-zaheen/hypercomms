@@ -18,6 +18,8 @@ import {
   increment,
   limit,
   deleteDoc,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import {
   useCollection,
@@ -189,6 +191,41 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
     await deleteDoc(doc(db, "rooms", router.query.roomId));
   };
 
+  // Handling typing indicators
+  const handleTypingIndicator = async (e) => {
+    if (e.target.value !== "") {
+      await updateDoc(doc(db, "rooms", router.query.roomId), {
+        typing: arrayUnion(user.displayName),
+      });
+    }
+
+    if (e.target.value === "") {
+      await updateDoc(doc(db, "rooms", router.query.roomId), {
+        typing: arrayRemove(user.displayName),
+      });
+    }
+  };
+
+  const [typistsString, setTypistsString] = useState("");
+
+  useEffect(() => {
+    if (room?.data().typing.length === 1) {
+      setTypistsString(`${room?.data().typing[0]} is typing...`);
+    }
+    if (room?.data().typing.length === 2) {
+      setTypistsString(
+        `${room?.data().typing[0]} and ${room?.data().typing[1]} are typing...`
+      );
+    }
+    if (room?.data().typing.length === 3) {
+      setTypistsString(
+        `${room?.data().typing[0]}, ${room?.data().typing[1]} and ${
+          room?.data().typing[2]
+        } are typing...`
+      );
+    }
+  }, [room, typistsString]);
+
   return (
     <div className="w-full md:w-1/2 dark:text-white flex flex-col overflow-scroll scrollbar-hide p-4 md:py-0 h-full">
       {/* Topbar */}
@@ -232,6 +269,15 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
       </div>
       {/* Chats */}
       <div className="flex-1 flex flex-col-reverse my-4 overflow-y-scroll rounded-xl scrollbar-hide">
+        {room?.data().typing.length === 1 &&
+        room?.data().typing[0] !== user.displayName ? (
+          <p className="text-sm opacity-75">
+            {room?.data().typing[0]} is typing ...{" "}
+          </p>
+        ) : null}
+        {room?.data().typing.length > 1 ? (
+          <p className="text-sm opacity-75">Several people are typing ...</p>
+        ) : null}
         <div ref={scroller} className="h-4 bg-transparent"></div>
         {messages?.docs.map((message) => (
           <Message
@@ -281,6 +327,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
               value={text}
               onChange={(e) => {
                 setText(e.target.value);
+                handleTypingIndicator(e);
               }}
             />
           </div>
