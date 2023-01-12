@@ -37,6 +37,7 @@ import {
 function CentreColumnChat({ user, setViewRight, setViewLeft }) {
   const router = useRouter();
   const scroller = useRef();
+  const textInputElement = useRef();
 
   // Fetching room information
   const [room] = useDocument(doc(db, "rooms", router.query.roomId));
@@ -178,8 +179,11 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
   // Handling replied messages
   const [repliedMessage, setRepliedMessage] = useState();
 
-  // Deleting rooms
+  useEffect(() => {
+    textInputElement.current.focus();
+  }, [repliedMessage]);
 
+  // Deleting rooms
   const deleteRoom = async () => {
     router.push("/");
     await deleteDoc(doc(db, "rooms", router.query.roomId));
@@ -227,7 +231,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
         />
       </div>
       {/* Chats */}
-      <div className="flex-1 flex flex-col-reverse  overflow-y-scroll rounded-xl scrollbar-hide">
+      <div className="flex-1 flex flex-col-reverse my-4 overflow-y-scroll rounded-xl scrollbar-hide">
         <div ref={scroller} className="h-4 bg-transparent"></div>
         {messages?.docs.map((message) => (
           <Message
@@ -265,12 +269,21 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
 
         {/* Input container */}
         <div className="flex items-center space-x-4">
-          <CustomInput
-            placeholder={"Don't be shy, Say hi!"}
-            value={text}
-            setValue={setText}
-            className="mt-0 rounded-xl bg-white dark:bg-zinc-700 p-3 text-lg md:text-sm"
-          />
+          <div
+            className={`w-full flex items-center mt-0 rounded-xl bg-white dark:bg-zinc-700 p-3 text-lg md:text-sm`}
+          >
+            <input
+              ref={textInputElement}
+              autoFocus
+              className="bg-inherit rounded-md w-full outline-none"
+              placeholder={"Don't be shy, Say hi!"}
+              type="text"
+              value={text}
+              onChange={(e) => {
+                setText(e.target.value);
+              }}
+            />
+          </div>
           <IconButton
             Icon={PaperAirplaneIcon}
             className="bg-green-200 dark:bg-rose-600"
