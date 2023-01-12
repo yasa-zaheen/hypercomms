@@ -172,6 +172,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
           sent: sentTime,
           sender: user.displayName,
         },
+        typing: arrayRemove(user.displayName),
       });
 
       scroller.current.scrollIntoView({ behavior: "smooth" });
