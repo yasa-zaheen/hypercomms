@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import { db } from "../firebase";
-import { collection, orderBy, query } from "firebase/firestore";
+import { collection, limit, orderBy, query } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import Avatar from "./Avatar";
@@ -11,7 +11,7 @@ import { Squares2X2Icon } from "@heroicons/react/24/outline";
 
 function RightColumn({ viewRight, setViewRight }) {
   const [users] = useCollectionData(
-    query(collection(db, "users"), orderBy("points", "desc"))
+    query(collection(db, "users"), orderBy("points", "desc"), limit(10))
   );
 
   const container = useRef();
@@ -43,9 +43,8 @@ function RightColumn({ viewRight, setViewRight }) {
             <Avatar src={user.photoURL} />
             <div className="ml-4 flex-1">
               <p className="text-sm font-medium">{user.displayName}</p>
-              <p className="text-xs opacity-50">{user.email}</p>
             </div>
-            <p className="text-md font-semibold">{user.points} pts</p>
+            <p className="text-md font-semibold">{user.points} 🔥</p>
           </div>
         ))}
       </div>
