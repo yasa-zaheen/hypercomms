@@ -27,7 +27,7 @@ function Message({ message, style, setRepliedMessage, user }) {
   let messageStyle = `w-full flex flex-col cursor-pointer ${
     userSentMessage
       ? "bg-rose-500 items-end"
-      : "bg-gray-100 text-black items-start"
+      : "bg-gray-100 text-black dark:bg-gray-800 dark:text-white items-start"
   } w-fit px-4 py-2 text-white rounded-3xl ease-in-out`;
   switch (styleOfMessage) {
     case "first":
