@@ -17,6 +17,7 @@ import {
   updateDoc,
   increment,
   limit,
+  deleteDoc,
 } from "firebase/firestore";
 import {
   useCollection,
@@ -28,6 +29,7 @@ import {
   BellAlertIcon,
   PaperAirplaneIcon,
   Squares2X2Icon,
+  TrashIcon,
   TrophyIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -39,21 +41,21 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
   // Fetching room information
   const [room] = useDocument(doc(db, "rooms", router.query.roomId));
 
-  const displayName = room?.data().groupChatName
-    ? room?.data().groupChatName
+  const displayName = room?.data()?.groupChatName
+    ? room?.data()?.groupChatName
     : room?.data()?.userInfo[0].email === user.email
-    ? room?.data().userInfo[1].displayName
-    : room?.data().userInfo[0].displayName;
+    ? room?.data()?.userInfo[1].displayName
+    : room?.data()?.userInfo[0].displayName;
 
   const email =
     room?.data()?.userInfo[0].email === user.email
-      ? room?.data().userInfo[1].email
-      : room?.data().userInfo[0].email;
+      ? room?.data()?.userInfo[1].email
+      : room?.data()?.userInfo[0].email;
 
   const displayPicture =
     room?.data()?.userInfo[0].email === user.email
-      ? room?.data().userInfo[1].photoURL
-      : room?.data().userInfo[0].photoURL;
+      ? room?.data()?.userInfo[1].photoURL
+      : room?.data()?.userInfo[0].photoURL;
 
   // Fetching the messsages
   const [messages] = useCollection(
@@ -175,6 +177,13 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
   // Handling replied messages
   const [repliedMessage, setRepliedMessage] = useState();
 
+  // Deleting rooms
+
+  const deleteRoom = async () => {
+    router.push("/");
+    await deleteDoc(doc(db, "rooms", router.query.roomId));
+  };
+
   return (
     <div className="w-full md:w-1/2 dark:text-white flex flex-col overflow-scroll scrollbar-hide p-4 md:py-0 h-full">
       {/* Topbar */}
@@ -182,11 +191,18 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
         <Avatar src={displayPicture} />
         <div className="flex flex-col ml-2 justify-around">
           <p className="text-sm">{displayName}</p>
-          {!room?.data().groupChatName ? (
+          {!room?.data()?.groupChatName ? (
             <p className="text-xs opacity-50">{email}</p>
           ) : null}
         </div>
         <div className="flex-1"></div>
+        {!room?.data()?.groupChatName ? (
+          <IconButton
+            Icon={TrashIcon}
+            onClick={deleteRoom}
+            className={"bg-red-50 dark:bg-rose-900 dark:text-white"}
+          />
+        ) : null}
         <IconButton
           Icon={Squares2X2Icon}
           onClick={() => {
