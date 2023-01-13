@@ -203,7 +203,7 @@ function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
           >
             <IconButton
               Icon={TrophyIcon}
-              className={"bg-rose-100 dark:bg-rose-[#fb71855f]"}
+              className={"bg-rose-100 dark:bg-[#fb71855f]"}
             />
             <div className="flex flex-col">
               <p className="font-semibold">Leaderboard</p>

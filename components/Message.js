@@ -120,8 +120,8 @@ function Message({ message, style, setRepliedMessage, user }) {
         </p>
 
         {message.data().reactions?.length != 0 ? (
-          <p className="bg-gray-100 rounded-xl p-2 text-xs mx-2">
-            ❤ {message.data().reactions?.length}
+          <p className="bg-gray-50 dark:bg-zinc-800 rounded-xl p-2 text-xs mx-2">
+            🧡 {message.data().reactions?.length}
           </p>
         ) : null}
 
