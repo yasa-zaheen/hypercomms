@@ -28,7 +28,7 @@ function Message({ message, style, setRepliedMessage, user }) {
     userSentMessage
       ? "bg-rose-500 items-end"
       : "bg-gray-100 text-black dark:bg-zinc-800 dark:text-white items-start"
-  } w-fit px-4 py-2 text-white rounded-3xl ease-in-out`;
+  } w-fit px-4 py-2 rounded-3xl ease-in-out`;
   switch (styleOfMessage) {
     case "first":
       messageStyle += userSentMessage ? " rounded-br-none" : " rounded-bl-none";
