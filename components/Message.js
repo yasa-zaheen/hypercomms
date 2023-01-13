@@ -26,7 +26,7 @@ function Message({ message, style, setRepliedMessage, user }) {
   // Setting the roundness of the message
   let messageStyle = `w-full flex flex-col cursor-pointer ${
     userSentMessage
-      ? "bg-rose-500 items-end"
+      ? "bg-rose-500 items-end text-white"
       : "bg-gray-100 text-black dark:bg-zinc-800 dark:text-white items-start"
   } w-fit px-4 py-2 rounded-3xl ease-in-out`;
   switch (styleOfMessage) {
