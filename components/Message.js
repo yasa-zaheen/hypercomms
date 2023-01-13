@@ -120,7 +120,7 @@ function Message({
         {/* Message content */}
         {message.data().content.includes("firebasestorage.googleapis.com") ? (
           <div
-            className={`${messageStyle} h-fit w-fit px-0 py-0 overflow-hidden flex items-center justify-center relative`}
+            className={`${messageStyle} h-fit w-fit md:w-1/2 px-0 py-0 overflow-hidden flex items-center justify-center relative`}
           >
             <embed
               className="h-full w-full object-fill"
