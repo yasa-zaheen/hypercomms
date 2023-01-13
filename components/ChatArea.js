@@ -12,7 +12,7 @@ function ChatArea({ user }) {
   const [viewRight, setViewRight] = useState(false);
 
   return (
-    <div className="h-screen w-full overflow-hidden scrollbar-hide flex dark:bg-black md:p-4">
+    <div className="h-screen w-full overflow-hidden scrollbar-hide flex md:space-x-4 dark:bg-black md:p-4">
       {/* Left column */}
       <LeftColumn viewLeft={viewLeft} setViewLeft={setViewLeft} user={user} />
       {/* Centre column */}

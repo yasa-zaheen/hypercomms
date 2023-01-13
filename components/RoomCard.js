@@ -31,7 +31,7 @@ function RoomCard({ room, user, setViewLeft }) {
             router.push(`/?roomId=${room.id}`);
             setViewLeft(false);
           }}
-          className="flex p-4 items-center rounded-xl bg-gray-50 dark:bg-zinc-800 dark:text-white cursor-pointer hover:scale-105 hover:bg-green-100 dark:hover:bg-zinc-700 hover:shadow-lg active:brightness-75 duration-75 ease-in-out"
+          className="flex p-4 mb-2 items-center rounded-xl bg-gray-50 dark:bg-zinc-800 dark:text-white cursor-pointer md:hover:shadow-md md:hover:bg-green-50 md:hover:text-green-900 md:dark:hover:bg-[#4ade805f] md:dark:hover:text-green-50 active:brightness-75 duration-200   ease-in-out"
         >
           <Avatar src={contact.data().photoURL} />
           <div className="flex flex-col flex-1 items-start ml-4">

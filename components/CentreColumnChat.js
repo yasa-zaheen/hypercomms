@@ -208,9 +208,9 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
   };
 
   return (
-    <div className="w-full md:w-1/2 dark:text-white flex flex-col overflow-scroll scrollbar-hide p-4 md:py-0 h-full">
+    <div className="w-full md:w-1/2 dark:text-white flex flex-col overflow-scroll relative scrollbar-hide md:py-0 h-full">
       {/* Topbar */}
-      <div className="bg-blue-50 dark:bg-zinc-800 rounded-xl p-4 flex items-center">
+      <div className="backdrop-blur-md shadow-md dark:bg-zinc-800 rounded-xl p-4 flex items-center absolute w-full z-50">
         <Avatar src={displayPicture} />
         <div className="flex flex-col ml-2 justify-around">
           <p className="text-sm">{displayName}</p>
@@ -223,7 +223,9 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
           <IconButton
             Icon={TrashIcon}
             onClick={deleteRoom}
-            className={"bg-red-50 dark:bg-rose-900 dark:text-white"}
+            className={
+              "bg-red-50 text-rose-900 dark:bg-[#fb71855f] dark:text-red-50"
+            }
           />
         ) : null}
         <IconButton
@@ -231,25 +233,31 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
           onClick={() => {
             router.push("/");
           }}
-          className={"bg-blue-200 md:hidden"}
+          className={
+            "bg-blue-50 text-blue-900 dark:bg-[#60a5fa5f] dark:bg-blue-50 md:hidden"
+          }
         />
         <IconButton
           Icon={TrophyIcon}
           onClick={() => {
             setViewRight(true);
           }}
-          className={"bg-blue-200 mx-2 md:hidden"}
+          className={
+            "bg-blue-50 text-blue-900 dark:bg-[#60a5fa5f] dark:bg-blue-50 mx-2 md:hidden"
+          }
         />
         <IconButton
           Icon={BellAlertIcon}
           onClick={() => {
             setViewLeft(true);
           }}
-          className={"bg-blue-200 md:hidden"}
+          className={
+            "bg-blue-50 text-blue-900 dark:bg-[#60a5fa5f] dark:bg-blue-50 md:hidden"
+          }
         />
       </div>
       {/* Chats */}
-      <div className="flex-1 flex flex-col-reverse my-4 overflow-y-scroll rounded-xl scrollbar-hide">
+      <div className="flex-1 flex flex-col-reverse my-4 px-2 md:px-0 overflow-y-scroll rounded-xl scrollbar-hide">
         {room?.data().typing?.length === 1 &&
         room?.data().typing[0] !== user.displayName ? (
           <p className="text-sm opacity-75">
@@ -272,7 +280,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
       </div>
       {/* Input */}
       <form
-        className="bg-green-50 dark:bg-zinc-800 rounded-xl p-4 flex flex-col"
+        className="bg-green-50 text-green-900 dark:bg-zinc-800 rounded-xl p-4 flex flex-col"
         onSubmit={sendMessage}
       >
         {/* Replied message container */}
@@ -283,7 +291,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
         >
           <IconButton
             Icon={XMarkIcon}
-            className="bg-green-200 dark:bg-cyan-900"
+            className="bg-green-100 text-green-900 dark:bg-cyan-900"
             onClick={() => {
               setRepliedMessage();
             }}

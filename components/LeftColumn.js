@@ -32,7 +32,7 @@ function LeftColumn({ user, viewLeft, setViewLeft }) {
   return (
     <div
       ref={container}
-      className="-translate-x-full w-full h-screen p-4 absolute bg-white dark:bg-black z-50 flex flex-col rounded-xl md:w-1/4 md:relative md:p-0 md:h-auto md:translate-x-0 duration-200 ease-in-out"
+      className="-translate-x-full overflow-scroll scrollbar-hide w-full h-screen absolute bg-white dark:bg-black z-50 flex flex-col rounded-xl p-4 md:p-0 md:w-1/4 md:relative md:h-auto md:translate-x-0 duration-200 ease-in-out"
     >
       {/* Control Panel */}
       <div className="bg-gray-50 dark:bg-zinc-800 rounded-xl p-4 flex items-center justify-between">
@@ -48,14 +48,14 @@ function LeftColumn({ user, viewLeft, setViewLeft }) {
 
       {/* Home button */}
       <div
-        className="my-4 bg-rose-50 dark:bg-rose-900 dark:text-white p-4 rounded-xl hidden items-center space-x-4 cursor-pointer hover:scale-105 hover:bg-red-100 dark:hover:bg-red-700 hover:shadow-lg active:brightness-75 duration-75 ease-in-out md:flex"
+        className="my-2 bg-rose-50 text-rose-900 dark:bg-[#fb71855f] dark:text-rose-50 p-4 rounded-xl hidden items-center space-x-4 cursor-pointer hover:shadow-md active:brightness-75 duration-200 ease-in-out md:flex"
         onClick={() => {
           router.push("/");
         }}
       >
         <IconButton
           Icon={Squares2X2Icon}
-          className={"bg-red-200 dark:bg-rose-800"}
+          className={"bg-red-100 dark:bg-[#fb71855f]"}
         />
         <div className="flex flex-col">
           <p className="font-semibold">Dashboard</p>
@@ -63,7 +63,7 @@ function LeftColumn({ user, viewLeft, setViewLeft }) {
         </div>
       </div>
       <div
-        className="my-4 bg-red-50 dark:bg-rose-900 dark:text-white p-4 rounded-xl flex items-center space-x-4 cursor-pointer hover:scale-105 hover:bg-red-100 dark:hover:bg-red-700 hover:shadow-lg active:brightness-75 duration-75 ease-in-out md:hidden"
+        className="my-2 bg-rose-50 text-rose-900 dark:bg-rose-900 dark:text-white p-4 rounded-xl flex items-center space-x-4 cursor-pointer active:brightness-75 duration-200 ease-in-out md:hidden"
         onClick={() => {
           setViewLeft(false);
         }}
@@ -79,7 +79,7 @@ function LeftColumn({ user, viewLeft, setViewLeft }) {
       </div>
 
       {/* Contacts Panel */}
-      <div className="bg-gray-50 dark:bg-zinc-800 overflow-scroll scrollbar-hide rounded-xl flex-1">
+      <div className="rounded-xl flex-1">
         {rooms?.docs.map((room) => (
           <RoomCard setViewLeft={setViewLeft} user={user} room={room} />
         ))}

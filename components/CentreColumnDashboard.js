@@ -130,10 +130,10 @@ function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
   };
 
   return (
-    <div className="w-full h-full dark:bg-black dark:text-white rounded-xl flex flex-col overflow-scroll scrollbar-hide p-4 md:py-0 md:w-1/2 ">
+    <div className="w-full h-full dark:bg-black dark:text-white rounded-xl flex flex-col overflow-scroll scrollbar-hide p-4 md:p-0 md:w-1/2 ">
       {/* News and updates */}
 
-      <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+      <div className="flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0">
         <div className="w-full p-4 rounded-xl bg-gradient-to-tr from-[#d3f3f1] to-[#b5c6e0] dark:from-[#103783] dark:to-[#9bafd9] md:w-1/2">
           <p className="text-2xl font-semibold">What's new</p>
           <p className="text-sm opacity-75">
@@ -156,20 +156,20 @@ function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
         <p className="text-2xl font-semibold mt-4">
           Let's welcome our new users!
         </p>
-        <p className="text-sm opacity-75">
+        <p className="text-sm opacity-75 mb-4">
           Click on their cards to start chatting with them!
         </p>
-        <div className="grid grid-flow-row grid-cols-1 gap-x-4 gap-y-4 mt-4 md:grid-cols-3">
+        <div className="grid grid-flow-row grid-cols-1 gap-x-2 gap-y-2 mt-2 md:grid-cols-3">
           {/* Group chat button */}
           <div
-            className="bg-teal-50 dark:bg-teal-900 p-4 rounded-xl flex items-center space-x-4 cursor-pointer hover:scale-105 hover:bg-teal-100 dark:hover:bg-teal-800 hover:shadow-lg active:brightness-75 duration-75 ease-in-out"
+            className="bg-cyan-50 text-cyan-900 dark:bg-[#2dd4bf5f] dark:text-cyan-50 p-4 rounded-xl flex items-center space-x-4 cursor-pointer active:brightness-75 duration-75 ease-in-out"
             onClick={() => {
               setViewGroupChatPanel(true);
             }}
           >
             <IconButton
               Icon={UserGroupIcon}
-              className={"bg-teal-200 dark:bg-teal-700"}
+              className={"bg-cyan-100 dark:bg-[#2dd4bf5f]"}
             />
             <div className="flex flex-col">
               <p className="font-semibold">Group Chat</p>
@@ -178,14 +178,14 @@ function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
           </div>
           {/* Conversations button */}
           <div
-            className="bg-fuchsia-50 dark:bg-fuchsia-900 p-4 rounded-xl flex items-center space-x-4 cursor-pointer hover:scale-105 hover:bg-fuchsia-100 dark:hover:bg-fuchsia-800 hover:shadow-lg active:brightness-75 duration-75 ease-in-out md:hidden"
+            className="bg-fuchsia-50 text-fuchsia-900 dark:bg-[#e879f95f] dark:text-fuchsia-50 p-4 rounded-xl flex items-center space-x-4 cursor-pointer active:brightness-75 duration-75 ease-in-out md:hidden"
             onClick={() => {
               setViewLeft(true);
             }}
           >
             <IconButton
               Icon={BellAlertIcon}
-              className={"bg-fuchsia-200 dark:bg-fuchsia-700"}
+              className={"bg-fuchsia-200 dark:bg-[#e879f95f]"}
             />
             <div className="flex flex-col">
               <p className="font-semibold">Conversations</p>
@@ -196,14 +196,14 @@ function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
           </div>
           {/* Leaderboards button */}
           <div
-            className="bg-rose-50 dark:bg-rose-900 p-4 rounded-xl flex items-center space-x-4 cursor-pointer hover:scale-105 hover:bg-rose-100 dark:hover:bg-rose-800 hover:shadow-lg active:brightness-75 duration-75 ease-in-out md:hidden"
+            className="bg-rose-50 text-rose-900 dark:bg-[#fb71855f] dark:text-rose-50 p-4 rounded-xl flex items-center space-x-4 cursor-pointer active:brightness-75 duration-75 ease-in-out md:hidden"
             onClick={() => {
               setViewRight(true);
             }}
           >
             <IconButton
               Icon={TrophyIcon}
-              className={"bg-rose-200 dark:bg-rose-800"}
+              className={"bg-rose-100 dark:bg-rose-[#fb71855f]"}
             />
             <div className="flex flex-col">
               <p className="font-semibold">Leaderboard</p>
@@ -214,7 +214,7 @@ function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
           </div>
           {users?.map((user) => (
             <div
-              className="bg-gray-50 dark:bg-zinc-800 flex space-x-4 items-center p-4 rounded-xl cursor-pointer hover:scale-105 hover:bg-purple-100 dark:hover:bg-violet-900 hover:shadow-lg active:brightness-75 duration-75 ease-in-out"
+              className="bg-gray-50 dark:bg-zinc-800 flex space-x-4 items-center p-4 rounded-xl cursor-pointer hover:bg-purple-50 dark:hover:bg-[#c084fc5f] dark:hover:text-purple-50 dark:hover:border-purple-50 hover:shadow-md active:brightness-75 duration-75 ease-in-out"
               onClick={() => {
                 startConversation(user.email);
               }}
