@@ -210,7 +210,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
   return (
     <div className="w-full md:w-1/2 dark:text-white flex flex-col overflow-scroll relative scrollbar-hide md:py-0 h-full">
       {/* Topbar */}
-      <div className="backdrop-blur-md shadow-md rounded-xl p-4 flex items-center absolute w-full z-50">
+      <div className="backdrop-blur-md backdrop-brightness-150 shadow-md rounded-xl p-4 flex items-center absolute w-full z-10">
         <Avatar src={displayPicture} />
         <div className="flex flex-col ml-2 justify-around">
           <p className="text-sm">{displayName}</p>
@@ -234,7 +234,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
             router.push("/");
           }}
           className={
-            "bg-blue-50 text-blue-900 dark:bg-[#60a5fa5f] dark:bg-blue-50 md:hidden"
+            "bg-blue-50 text-blue-900 dark:bg-[#60a5fa5f] dark:text-blue-50 md:hidden"
           }
         />
         <IconButton
@@ -243,7 +243,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
             setViewRight(true);
           }}
           className={
-            "bg-blue-50 text-blue-900 dark:bg-[#60a5fa5f] dark:bg-blue-50 mx-2 md:hidden"
+            "bg-fuchsia-50 text-fuchsia-900 dark:bg-[#e879f95f] dark:text-fuchsia-50 mx-2 md:hidden"
           }
         />
         <IconButton
@@ -252,7 +252,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
             setViewLeft(true);
           }}
           className={
-            "bg-blue-50 text-blue-900 dark:bg-[#60a5fa5f] dark:bg-blue-50 md:hidden"
+            "bg-rose-50 text-rose-900 dark:bg-[#fb71855f] dark:text-rose-50 md:hidden"
           }
         />
       </div>
@@ -280,7 +280,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
       </div>
       {/* Input */}
       <form
-        className="bg-green-50 text-green-900 dark:bg-zinc-800 rounded-xl p-4 flex flex-col"
+        className="bg-green-50 text-green-900 dark:bg-zinc-800 dark:text-white rounded-xl p-4 flex flex-col"
         onSubmit={sendMessage}
       >
         {/* Replied message container */}
