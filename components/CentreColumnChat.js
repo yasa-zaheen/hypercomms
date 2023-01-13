@@ -134,8 +134,10 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
     const sentTime = serverTimestamp();
     const inputText = text;
     const repliedText = repliedMessage;
+    const repliedTextSender = repliedMessageSender;
     setText("");
     setRepliedMessage("");
+    setRepliedMessageSender();
 
     if (text !== "") {
       const messageRef = await addDoc(
@@ -147,6 +149,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
           senderName: user.displayName,
           room: room.id,
           replied: repliedText || null,
+          repliedMessageSender: repliedMessageSender || null,
           reactions: [],
         }
       );
@@ -181,6 +184,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
 
   // Handling replied messages
   const [repliedMessage, setRepliedMessage] = useState();
+  const [repliedMessageSender, setRepliedMessageSender] = useState();
 
   useEffect(() => {
     textInputElement.current.focus();
@@ -274,6 +278,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
             style={getMessageStyle(message)}
             repliedMessage={repliedMessage}
             setRepliedMessage={setRepliedMessage}
+            setRepliedMessageSender={setRepliedMessageSender}
             user={user}
           />
         ))}
@@ -291,13 +296,15 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
         >
           <IconButton
             Icon={XMarkIcon}
-            className="bg-green-100 text-green-900 dark:bg-cyan-900"
+            className="bg-green-50 text-green-900 dark:bg-[#22d3ee5f] dark:text-cyan-50"
             onClick={() => {
               setRepliedMessage();
             }}
           />
           <div>
-            <p className="text-sm font-semibold">Replying to</p>
+            <p className="text-sm font-semibold">
+              Replying to {repliedMessageSender}
+            </p>
             <p className="text-xs opacity-75">{repliedMessage}</p>
           </div>
         </div>

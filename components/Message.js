@@ -18,7 +18,13 @@ import { useDocumentData } from "react-firebase-hooks/firestore";
 
 import { ArrowUturnLeftIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-function Message({ message, style, setRepliedMessage, user }) {
+function Message({
+  message,
+  style,
+  setRepliedMessage,
+  setRepliedMessageSender,
+  user,
+}) {
   const { userSentMessage, styleOfMessage } = style;
 
   const [customUser] = useDocumentData(doc(db, "users", message.data().sender));
@@ -46,7 +52,8 @@ function Message({ message, style, setRepliedMessage, user }) {
 
   // Handling replied messages
   const replytoMessage = (message) => {
-    setRepliedMessage(message);
+    setRepliedMessage(message.content);
+    setRepliedMessageSender(message.senderName);
   };
 
   // Handling deleted messages
@@ -113,7 +120,8 @@ function Message({ message, style, setRepliedMessage, user }) {
         <p className={messageStyle} onDoubleClick={likeMessage}>
           {message.data().replied ? (
             <p className="text-xs font-semibold">
-              Replied to: {message.data().replied}
+              Replied to {message.data().repliedMessageSender}:{" "}
+              {message.data().replied}
             </p>
           ) : null}
           {message.data().content}
@@ -134,7 +142,7 @@ function Message({ message, style, setRepliedMessage, user }) {
           } scale-0 group-hover:scale-100 `}
           Icon={ArrowUturnLeftIcon}
           onClick={() => {
-            replytoMessage(message.data().content);
+            replytoMessage(message.data());
           }}
         />
         {userSentMessage ? (
