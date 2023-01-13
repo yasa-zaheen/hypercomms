@@ -210,7 +210,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
   return (
     <div className="w-full md:w-1/2 dark:text-white flex flex-col overflow-scroll relative scrollbar-hide md:py-0 h-full">
       {/* Topbar */}
-      <div className="backdrop-blur-md shadow-md dark:bg-zinc-800 rounded-xl p-4 flex items-center absolute w-full z-50">
+      <div className="backdrop-blur-md shadow-md rounded-xl p-4 flex items-center absolute w-full z-50">
         <Avatar src={displayPicture} />
         <div className="flex flex-col ml-2 justify-around">
           <p className="text-sm">{displayName}</p>
@@ -322,7 +322,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
           </div>
           <IconButton
             Icon={PaperAirplaneIcon}
-            className="bg-green-200 dark:bg-rose-600"
+            className="bg-green-200 dark:bg-[#fb71855f] dark:text-rose-50"
             submit
           />
         </div>
