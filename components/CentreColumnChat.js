@@ -258,13 +258,13 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
       </div>
       {/* Chats */}
       <div className="flex-1 flex flex-col-reverse my-4 px-2 md:px-0 overflow-y-scroll rounded-xl scrollbar-hide">
-        {room?.data().typing?.length === 1 &&
-        room?.data().typing[0] !== user.displayName ? (
+        {room?.data()?.typing?.length === 1 &&
+        room?.data()?.typing[0] !== user.displayName ? (
           <p className="text-sm opacity-75">
             {room?.data().typing[0]} is typing ...{" "}
           </p>
         ) : null}
-        {room?.data().typing?.length > 1 ? (
+        {room?.data()?.typing?.length > 1 ? (
           <p className="text-sm opacity-75">Several people are typing ...</p>
         ) : null}
         <div ref={scroller} className="h-4 bg-transparent"></div>
