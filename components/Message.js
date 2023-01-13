@@ -17,6 +17,7 @@ import {
 import { useDocumentData } from "react-firebase-hooks/firestore";
 
 import { ArrowUturnLeftIcon, TrashIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 function Message({
   message,
@@ -117,15 +118,26 @@ function Message({
         }`}
       >
         {/* Message content */}
-        <p className={messageStyle} onDoubleClick={likeMessage}>
-          {message.data().replied ? (
-            <p className="text-xs font-semibold">
-              Replied to {message.data().repliedMessageSender}:{" "}
-              {message.data().replied}
-            </p>
-          ) : null}
-          {message.data().content}
-        </p>
+        {message.data().content.includes("firebasestorage.googleapis.com") ? (
+          <div
+            className={`${messageStyle} h-80 w-full px-0 py-0 overflow-hidden flex items-center justify-center relative`}
+          >
+            <embed
+              className="h-full w-full object-fill"
+              src={message.data().content}
+            />
+          </div>
+        ) : (
+          <p className={messageStyle} onDoubleClick={likeMessage}>
+            {message.data().replied ? (
+              <p className="text-xs font-semibold">
+                Replied to {message.data().repliedMessageSender}:{" "}
+                {message.data().replied}
+              </p>
+            ) : null}
+            {message.data().content}
+          </p>
+        )}
 
         {message.data().reactions?.length != 0 ? (
           <p className="bg-gray-50 dark:bg-zinc-800 rounded-xl p-2 text-xs mx-2">

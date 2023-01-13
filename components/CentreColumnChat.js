@@ -6,7 +6,7 @@ import Message from "./Message";
 import CustomInput from "./CustomInput";
 import IconButton from "./IconButton";
 
-import { db } from "../firebase";
+import { db, storage } from "../firebase";
 import {
   addDoc,
   collection,
@@ -21,20 +21,18 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
-import {
-  useCollection,
-  useCollectionData,
-  useDocument,
-} from "react-firebase-hooks/firestore";
+import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 
 import {
   BellAlertIcon,
   PaperAirplaneIcon,
+  PlusCircleIcon,
   Squares2X2Icon,
   TrashIcon,
   TrophyIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 function CentreColumnChat({ user, setViewRight, setViewLeft }) {
   const router = useRouter();
@@ -139,7 +137,45 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
     setRepliedMessage("");
     setRepliedMessageSender();
 
-    if (text !== "") {
+    if (file) {
+      const storageRef = ref(storage, `${user.email}/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          fileProgressIndicator.current.style.width = `${progress}%`;
+          fileProgressIndicator.current.style.height = `0.25rem`;
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            const messageRef = await addDoc(
+              collection(db, `rooms/${room.id}/messages`),
+              {
+                content: downloadURL,
+                sent: sentTime,
+                sender: user.email,
+                senderName: user.displayName,
+                room: room.id,
+                replied: repliedText || null,
+                repliedMessageSender: repliedTextSender || null,
+                reactions: [],
+              }
+            );
+          });
+
+          exitFilePreviewer();
+          fileProgressIndicator.current.style.width = `0%`;
+          fileProgressIndicator.current.style.height = `0`;
+        }
+      );
+    } else if (text !== "") {
       const messageRef = await addDoc(
         collection(db, `rooms/${room.id}/messages`),
         {
@@ -149,37 +185,41 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
           senderName: user.displayName,
           room: room.id,
           replied: repliedText || null,
-          repliedMessageSender: repliedMessageSender || null,
+          repliedMessageSender: repliedTextSender || null,
           reactions: [],
         }
       );
-
-      const userRef = doc(db, "users", user.email);
-
-      // Points for replied message
-      if (repliedMessage) {
-        await updateDoc(userRef, {
-          points: increment(7),
-        });
-      } else {
-        await updateDoc(userRef, {
-          points: increment(5),
-        });
-      }
-
-      // Updating the last message
-      const roomRef = doc(db, "rooms", router.query.roomId);
-      await updateDoc(roomRef, {
-        lastSentMessage: {
-          content: inputText,
-          sent: sentTime,
-          sender: user.displayName,
-        },
-        typing: arrayRemove(user.displayName),
-      });
-
-      scroller.current.scrollIntoView({ behavior: "smooth" });
     }
+
+    const userRef = doc(db, "users", user.email);
+
+    // Points for replied message
+    if (file) {
+      await updateDoc(userRef, {
+        points: increment(15),
+      });
+    } else if (repliedMessage) {
+      await updateDoc(userRef, {
+        points: increment(7),
+      });
+    } else {
+      await updateDoc(userRef, {
+        points: increment(5),
+      });
+    }
+
+    // Updating the last message
+    const roomRef = doc(db, "rooms", router.query.roomId);
+    await updateDoc(roomRef, {
+      lastSentMessage: {
+        content: inputText,
+        sent: sentTime,
+        sender: user.displayName,
+      },
+      typing: arrayRemove(user.displayName),
+    });
+
+    scroller.current.scrollIntoView({ behavior: "smooth" });
   };
 
   // Handling replied messages
@@ -209,6 +249,57 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
         typing: arrayRemove(user.displayName),
       });
     }
+  };
+
+  // Handling media uploads
+  const [file, setFile] = useState();
+  const [uploadedImgSrc, setUploadedImgSrc] = useState();
+  const [uploadedFileName, setUploadedFileName] = useState();
+
+  const filePreviewerContainer = useRef();
+  const uploadedImg = useRef();
+  const fileProgressIndicator = useRef();
+
+  // DONE: Create button
+  // DONE: Save image info in state
+  // DONE: Preview image
+  // DONE: Upload image
+  // DONE: Progress indicator
+  // DONE: Send URL as text message
+  // TODO: View Image
+
+  const fileUploadHandler = (e) => {
+    e.preventDefault();
+    const reader = new FileReader();
+
+    if (e.target.files[0]) {
+      setFile(e.target.files[0]);
+
+      reader.onload = (function () {
+        if (e.target.files[0].type === "image/jpeg") {
+          return function (e) {
+            setUploadedImgSrc(e.target.result);
+          };
+        } else {
+          return function () {
+            setUploadedFileName(e.target.files[0].name);
+          };
+        }
+      })();
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+    filePreviewerContainer.current.classList.add("h-52");
+    filePreviewerContainer.current.classList.add("mb-4");
+  };
+
+  const exitFilePreviewer = () => {
+    filePreviewerContainer.current.classList.remove("h-52");
+    filePreviewerContainer.current.classList.remove("mb-4");
+
+    setFile(null);
+    setUploadedFileName(null);
+    setUploadedImgSrc(null);
   };
 
   return (
@@ -260,6 +351,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
           }
         />
       </div>
+
       {/* Chats */}
       <div className="flex-1 flex flex-col-reverse my-4 px-2 md:px-0 overflow-y-scroll rounded-xl scrollbar-hide">
         {room?.data()?.typing?.length === 1 &&
@@ -283,6 +375,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
           />
         ))}
       </div>
+
       {/* Input */}
       <form
         className="bg-green-50 text-green-900 dark:bg-zinc-800 dark:text-white rounded-xl p-4 flex flex-col"
@@ -309,8 +402,49 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
           </div>
         </div>
 
+        {/* File preview container */}
+
+        <div
+          ref={filePreviewerContainer}
+          className="w-full overflow-hidden flex items-center justify-start bg-inherit relative rounded-lg duration-200 ease-in-out"
+        >
+          {uploadedImgSrc ? (
+            <img
+              ref={uploadedImg}
+              src={uploadedImgSrc}
+              className="h-full rounded-lg"
+            />
+          ) : uploadedFileName ? (
+            <p className="bg-red-500 px-4 py-2 m-0">{uploadedFileName}</p>
+          ) : null}
+          <IconButton
+            onClick={exitFilePreviewer}
+            Icon={XMarkIcon}
+            className="absolute top-0 right-0 bg-green-200 dark:bg-[#fb71855f] dark:text-rose-50"
+          />
+          <span
+            ref={fileProgressIndicator}
+            className="h-0 w-0 bg-green-200 dark:bg-[#fb71855f] absolute bottom-0 duration-200 ease-linear rounded-lg"
+          ></span>
+        </div>
+
         {/* Input container */}
         <div className="flex items-center space-x-4">
+          {/* Media upload button */}
+          <input
+            type="file"
+            id="actual-btn"
+            onChange={fileUploadHandler}
+            hidden
+          />
+          <label
+            htmlFor="actual-btn"
+            className="h-10 w-10 cursor-pointer bg-green-200 dark:bg-[#fb71855f] dark:text-rose-50 rounded-full flex items-center justify-center p-3 active:brightness-90 duration-75 ease-in-out"
+          >
+            <PlusCircleIcon className="h-6 w-6" />
+          </label>
+
+          {/* Input element */}
           <div
             className={`w-full flex items-center mt-0 rounded-xl bg-white dark:bg-zinc-700 p-3 text-lg md:text-sm`}
           >
@@ -327,6 +461,8 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
               }}
             />
           </div>
+
+          {/* Send button */}
           <IconButton
             Icon={PaperAirplaneIcon}
             className="bg-green-200 dark:bg-[#fb71855f] dark:text-rose-50"
