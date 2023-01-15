@@ -18,6 +18,7 @@ import { useDocumentData } from "react-firebase-hooks/firestore";
 
 import { ArrowUturnLeftIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import Embed from "./Embed";
 
 function Message({
   message,
@@ -97,7 +98,6 @@ function Message({
       }`}
     >
       {/* Sender name */}
-      {/* Time and photo */}
       {styleOfMessage === "first" || styleOfMessage === "independent" ? (
         <div
           className={`flex items-center mb-1 mx-2 ${
@@ -111,22 +111,16 @@ function Message({
           {/* Photo */}
         </div>
       ) : null}
+
       {/* Message content, reply button, delete button, replied message and likes*/}
       <div
         className={`flex items-center ${
           userSentMessage ? "flex-row-reverse" : "flex-row"
         }`}
       >
-        {/* Message content */}
-        {message.data().content.includes("firebasestorage.googleapis.com") ? (
-          <div
-            className={`${messageStyle} h-fit w-fit md:w-1/2 px-0 py-0 overflow-hidden flex items-center justify-center relative`}
-          >
-            <embed
-              className="h-full w-full object-fill"
-              src={message.data().content}
-            />
-          </div>
+        {/* Message content and embed */}
+        {message.data().content.includes("https") ? (
+          <Embed messageStyle={messageStyle} src={message.data().content} />
         ) : (
           <p className={messageStyle} onDoubleClick={likeMessage}>
             {message.data().replied ? (
@@ -139,13 +133,14 @@ function Message({
           </p>
         )}
 
+        {/* Reactions */}
         {message.data().reactions?.length != 0 ? (
           <p className="bg-gray-50 dark:bg-zinc-800 rounded-xl p-2 text-xs mx-2">
             🧡 {message.data().reactions?.length}
           </p>
         ) : null}
 
-        {/* Reply button and delete button */}
+        {/* Reply button */}
         <IconButton
           className={`h-8 w-8 mx-1 ${
             userSentMessage
@@ -157,6 +152,7 @@ function Message({
             replytoMessage(message.data());
           }}
         />
+        {/* Delete button */}
         {userSentMessage ? (
           <IconButton
             className={`text-rose-500 mx-1 hover:bg-rose-50 dark:hover:bg-rose-800

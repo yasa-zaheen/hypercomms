@@ -25,7 +25,7 @@ function RightColumn({ viewRight, setViewRight }) {
   return (
     <div
       ref={container}
-      className="-translate-x-full bg-white dark:bg-black dark:text-white w-full absolute flex flex-col space-y-2 rounded-xl p-4 md:p-0 md:w-1/4 md:relative md:translate-x-0 duration-200 ease-in-out z-50"
+      className="-translate-x-full bg-white dark:bg-black dark:text-white w-full absolute flex flex-col space-y-2 rounded-xl p-4 md:p-0 md:w-1/4 md:relative md:translate-x-0 duration-200 ease-in-out z-40"
     >
       <div className=" bg-orange-50 text-orange-900 dark:bg-zinc-800 dark:text-white flex-1 overflow-scroll scrollbar-hide rounded-xl p-4">
         <div className="mb-4 flex items-center justify-between">
