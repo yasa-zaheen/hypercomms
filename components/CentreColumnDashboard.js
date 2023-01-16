@@ -134,14 +134,18 @@ function CentreColumnDashboard({ user, setViewRight, setViewLeft }) {
       {/* News and updates */}
 
       <div className="flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0">
-        <div className="w-full p-4 rounded-xl bg-gradient-to-tr from-[#d3f3f1] to-[#b5c6e0] dark:from-[#103783] dark:to-[#9bafd9] md:w-1/2">
+        <div className="w-full p-4 rounded-xl bg-gray-50 text-black dark:bg-zinc-800 dark:text-white md:w-1/2">
           <p className="text-2xl font-semibold">What's new</p>
           <p className="text-sm opacity-75">
             Well basically everything! Welcome to Eden(codename: hypercomms 😉).
             Try out the app and let me know how it works out!
           </p>
         </div>
-        <div className="w-full p-4 rounded-xl bg-gradient-to-tr from-[#e1dae6] to-[#f6c4ed] dark:from-[#0b3866] dark:to-[#95f9c3] md:w-1/2">
+        <div
+          className={`w-full p-4 rounded-xl md:w-1/2 ${
+            customUser?.data()?.theme
+          }`}
+        >
           <p className="text-2xl font-semibold">Upcoming</p>
           <p className="text-sm opacity-75">
             - Landing page

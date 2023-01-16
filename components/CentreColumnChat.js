@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 
 import Avatar from "./Avatar";
 import Message from "./Message";
-import CustomInput from "./CustomInput";
 import IconButton from "./IconButton";
 
 import { db, storage } from "../firebase";
@@ -21,7 +20,11 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
-import { useCollection, useDocument } from "react-firebase-hooks/firestore";
+import {
+  useCollection,
+  useDocument,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
 
 import {
   BellAlertIcon,
@@ -38,6 +41,8 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
   const router = useRouter();
   const scroller = useRef();
   const textInputElement = useRef();
+
+  const [customUser] = useDocumentData(doc(db, "users", user.email));
 
   // Fetching room information
   const [room] = useDocument(doc(db, "rooms", router.query.roomId));
@@ -260,14 +265,6 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
   const uploadedImg = useRef();
   const fileProgressIndicator = useRef();
 
-  // DONE: Create button
-  // DONE: Save image info in state
-  // DONE: Preview image
-  // DONE: Upload image
-  // DONE: Progress indicator
-  // DONE: Send URL as text message
-  // TODO: View Image
-
   const fileUploadHandler = (e) => {
     e.preventDefault();
     const reader = new FileReader();
@@ -378,7 +375,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
 
       {/* Input */}
       <form
-        className="bg-green-50 text-green-900 dark:bg-zinc-800 dark:text-white rounded-xl p-4 flex flex-col"
+        className="bg-gray-50 text-black dark:bg-zinc-800 dark:text-white rounded-xl p-4 flex flex-col"
         onSubmit={sendMessage}
       >
         {/* Replied message container */}
@@ -389,7 +386,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
         >
           <IconButton
             Icon={XMarkIcon}
-            className="bg-green-50 text-green-900 dark:bg-[#22d3ee5f] dark:text-cyan-50"
+            className={`${customUser?.theme}`}
             onClick={() => {
               setRepliedMessage();
             }}
@@ -439,7 +436,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
           />
           <label
             htmlFor="actual-btn"
-            className="h-10 w-10 cursor-pointer bg-green-200 dark:bg-[#fb71855f] dark:text-rose-50 rounded-full flex items-center justify-center p-3 active:brightness-90 duration-75 ease-in-out"
+            className={`h-10 w-10 cursor-pointer rounded-full flex items-center justify-center p-3 active:brightness-90 duration-75 ease-in-out ${customUser?.theme}`}
           >
             <PlusCircleIcon className="h-6 w-6" />
           </label>
@@ -465,7 +462,7 @@ function CentreColumnChat({ user, setViewRight, setViewLeft }) {
           {/* Send button */}
           <IconButton
             Icon={PaperAirplaneIcon}
-            className="bg-green-200 dark:bg-[#fb71855f] dark:text-rose-50"
+            className={`${customUser?.theme}`}
             submit
           />
         </div>

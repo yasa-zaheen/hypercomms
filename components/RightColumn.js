@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 import { db } from "../firebase";
 import { collection, limit, orderBy, query } from "firebase/firestore";
@@ -7,7 +7,7 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import Avatar from "./Avatar";
 import IconButton from "./IconButton";
 
-import { Squares2X2Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 function RightColumn({ viewRight, setViewRight }) {
   const [users] = useCollectionData(

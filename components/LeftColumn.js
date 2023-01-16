@@ -11,6 +11,7 @@ import { useCollection } from "react-firebase-hooks/firestore";
 
 import {
   ArrowRightOnRectangleIcon,
+  Cog8ToothIcon,
   Squares2X2Icon,
 } from "@heroicons/react/24/outline";
 import { useEffect, useRef } from "react";
@@ -35,8 +36,16 @@ function LeftColumn({ user, viewLeft, setViewLeft }) {
       className="-translate-x-full overflow-scroll scrollbar-hide w-full h-screen absolute bg-white dark:bg-black z-50 flex flex-col rounded-xl p-4 md:p-0 md:w-1/4 md:relative md:h-auto md:translate-x-0 duration-200 ease-in-out"
     >
       {/* Control Panel */}
-      <div className="bg-gray-50 dark:bg-zinc-800 rounded-xl p-4 flex items-center justify-between">
+      <div className="bg-gray-50 dark:bg-zinc-800 rounded-xl p-4 flex items-center space-x-2">
         <Avatar src={user?.photoURL} />
+        <div className="flex-1"></div>
+        <IconButton
+          Icon={Cog8ToothIcon}
+          className={"bg-gray-200 dark:bg-zinc-700 dark:text-white"}
+          onClick={() => {
+            router.push("/settings");
+          }}
+        />
         <IconButton
           Icon={ArrowRightOnRectangleIcon}
           className={"bg-gray-200 dark:bg-zinc-700 dark:text-white"}

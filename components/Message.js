@@ -34,8 +34,8 @@ function Message({
   // Setting the roundness of the message
   let messageStyle = `w-full flex flex-col cursor-pointer ${
     userSentMessage
-      ? "bg-rose-50 items-end text-rose-900 dark:bg-[#fb71855f] dark:text-rose-50"
-      : "bg-gray-100 text-black dark:bg-zinc-800 dark:text-white items-start"
+      ? `items-end text-rose-900 ${customUser?.theme}`
+      : `bg-gray-100 text-black dark:bg-zinc-800 dark:text-white items-start`
   } w-fit px-4 py-2 rounded-3xl ease-in-out`;
   switch (styleOfMessage) {
     case "first":
@@ -136,7 +136,7 @@ function Message({
         {/* Reactions */}
         {message.data().reactions?.length != 0 ? (
           <p className="bg-gray-50 dark:bg-zinc-800 rounded-xl p-2 text-xs mx-2">
-            🧡 {message.data().reactions?.length}
+            💓 {message.data().reactions?.length}
           </p>
         ) : null}
 
@@ -144,7 +144,7 @@ function Message({
         <IconButton
           className={`h-8 w-8 mx-1 ${
             userSentMessage
-              ? "bg-rose-500 text-white"
+              ? `${customUser?.theme}`
               : "bg-gray-100 text-black dark:bg-zinc-800 dark:text-white"
           } scale-0 group-hover:scale-100 `}
           Icon={ArrowUturnLeftIcon}
@@ -155,8 +155,7 @@ function Message({
         {/* Delete button */}
         {userSentMessage ? (
           <IconButton
-            className={`text-rose-500 mx-1 hover:bg-rose-50 dark:hover:bg-rose-800
-          scale-0 group-hover:scale-100 `}
+            className={`text-rose-500 mx-1 scale-0 group-hover:scale-100`}
             Icon={TrashIcon}
             onClick={deleteMessage}
           />
