@@ -18,7 +18,7 @@ function Settings() {
   const router = useRouter();
 
   const [user] = useAuthState(auth);
-  const [customUser] = useDocumentData(doc(db, "users", user.email));
+  const [customUser] = useDocumentData(doc(db, "users", user?.email));
 
   const [displayName, setDisplayName] = useState(user?.displayName);
 
