@@ -1,10 +1,10 @@
 import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-import Landing from "../components/Landing";
 import ChatArea from "../components/ChatArea";
 import Loading from "../components/Loading";
 import Head from "next/head";
+import SignIn from "./signIn";
 
 export default function Home() {
   const [user, loading] = useAuthState(auth);
@@ -29,7 +29,7 @@ export default function Home() {
         ></script>
       </Head>
       <main>
-        {loading ? <Loading /> : !user ? <Landing /> : <ChatArea user={user} />}
+        {loading ? <Loading /> : !user ? <SignIn /> : <ChatArea user={user} />}
         {}
       </main>
     </>
