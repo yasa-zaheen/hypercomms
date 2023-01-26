@@ -30,16 +30,6 @@ function SignIn() {
 
     signInWithPopup(auth, provider)
       .then(async (result) => {
-        await updateDoc(doc(db, "rooms", "wDregPmEJcZmRjl675aL"), {
-          users: arrayUnion(result.user.email),
-          userInfo: arrayUnion({
-            displayName: result.user.displayName,
-            email: result.user.email,
-            photoURL: result.user.photoURL,
-            uid: result.user.uid,
-          }),
-        });
-
         await setDoc(
           doc(db, "users", result.user.email),
           {
